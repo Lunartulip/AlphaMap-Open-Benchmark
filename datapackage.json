@@ -978,7 +978,7 @@
     "relationship_invariants": [
       "published_at <= available_at <= tradable_from",
       "propagation begins no earlier than max(event.tradable_from relation.tradable_from)",
-      "one latest tradable matching edge per event and directed security pair"
+      "one first-tradable matching edge per event and directed security pair; later parallel evidence does not rewrite history"
     ],
     "contract_version": "1.0.0"
   }
