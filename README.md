@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/Lunartulip/AlphaMap-Open-Benchmark/actions/workflows/ci.yml"><img src="https://github.com/Lunartulip/AlphaMap-Open-Benchmark/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <a href="datapackage.json"><img src="https://img.shields.io/badge/data_package-v1-5B8CFF" alt="Data package v1"></a>
-  <a href="research/protocol.json"><img src="https://img.shields.io/badge/protocol-draft_registered-12B886" alt="Draft registered protocol"></a>
+  <a href="research/protocol.json"><img src="https://img.shields.io/badge/protocol-draft_registered_pending_release-12B886" alt="Draft registered protocol"></a>
 </p>
 
 <a href="assets/visuals/alphamap-research-loop.svg">
@@ -68,7 +68,7 @@ The sample is intentionally small enough to reconstruct record by record. `cover
 
 ## What is measured
 
-A source event produces a direct issuer evidence impulse. When an active confirmed supplier edge exists, the same event can produce a separately labeled one-hop propagated impulse for the customer security. The registered supply-chain momentum feature is the change in 28-day decayed propagated evidence stock over four weeks.
+A source event produces a direct issuer evidence impulse. When an active confirmed supplier edge exists, the same event can produce a separately labeled one-hop propagated impulse for the customer security. The pre-specified supply-chain momentum feature is the change in 28-day decayed propagated evidence stock over four weeks.
 
 Direct and propagated components remain independently inspectable. Relationship knowledge time, event type, product applicability and parallel-edge deduplication are enforced before propagation.
 
