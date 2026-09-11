@@ -1,0 +1,7 @@
+security_id,entity_id,ticker,exchange,currency,valid_from,valid_to,benchmark_group
+SEC_US_NVDA,ENTITY_NVDA,NVDA,NASDAQ,USD,2023-08-23,,ai_infrastructure
+SEC_US_MU,ENTITY_MU,MU,NASDAQ,USD,2023-08-23,,ai_infrastructure
+SEC_US_VRT,ENTITY_VRT,VRT,NYSE,USD,2023-08-23,,ai_infrastructure
+SEC_US_AVGO,ENTITY_AVGO,AVGO,NASDAQ,USD,2023-08-23,,ai_infrastructure
+SEC_US_MRVL,ENTITY_MRVL,MRVL,NASDAQ,USD,2023-08-23,,ai_infrastructure
+SEC_US_ANET,ENTITY_ANET,ANET,NYSE,USD,2023-08-23,,ai_infrastructure

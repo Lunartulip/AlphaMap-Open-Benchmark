@@ -1,0 +1,12 @@
+frame_id,source_id,entity_id,document_type,selection_role,extraction_status,eligible_for_inference,exclusion_reason
+AUDIT-V1,SRC001,ENTITY_NVDA,issuer_release,audit_seed_accelerator,complete,false,
+AUDIT-V1,SRC002,ENTITY_MU,issuer_release,audit_seed_mixed_claims,complete,false,
+AUDIT-V1,SRC003,ENTITY_MU,issuer_release,audit_seed_supply_edge,complete,false,
+AUDIT-V1,SRC005,ENTITY_MU,issuer_release,audit_seed_memory_demand,complete,false,
+AUDIT-V1,SRC006,ENTITY_VRT,issuer_release,audit_seed_power_orders,complete,false,
+AUDIT-V1,SRC007,ENTITY_NVDA,issuer_release,audit_seed_accelerator,complete,false,
+AUDIT-V1,SRC008,ENTITY_AVGO,issuer_release,audit_seed_custom_silicon,complete,false,
+AUDIT-V1,SRC009,ENTITY_VRT,issuer_release,audit_seed_power_orders,complete,false,
+AUDIT-V1,SRC010,ENTITY_AVGO,issuer_release,audit_seed_custom_silicon,complete,false,
+AUDIT-V1,SRC011,ENTITY_MU,issuer_release,audit_seed_memory_demand,complete,false,
+AUDIT-V1,SRC013,ENTITY_MU,issuer_release,audit_seed_supply_edge,complete,false,

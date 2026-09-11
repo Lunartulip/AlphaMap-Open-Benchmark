@@ -1,76 +1,72 @@
-# 🔬 AI芯片产业链可视化图谱
-一个基于D3.js的交互式AI芯片产业链价值网络可视化工具，展示2025年全球AI芯片生态系统的关键参与者及其价值流动关系。
-## 🌟 项目特色
-- **实时数据展示** - 基于2025年Q2最新产业数据
-- **交互式体验** - 支持节点点击、悬停查看详情
-- **多维度分析** - 按时间周期、产业链环节筛选
-- **移动端适配** - 响应式设计，支持各种设备
-- **国产化视角** - 突出展示国产替代进展
-## 🎯 核心功能
-### 📊 数据可视化
-- **节点大小** - 代表公司营收规模
-- **连线粗细** - 表示供应链流量强度
-- **颜色编码** - 区分不同产业链环节
-- **布局算法** - 智能节点位置优化
-### 🎛️ 交互控制
-- **时间选择器** - 2024Q4 / 2025Q2 / 2025Q4
-- **视图模式** - 全链路 / 英伟达生态 / 华为链条 / HBM供应链
-- **实时筛选** - 动态更新图表内容
-- **详情悬浮** - 鼠标悬停查看公司详情
-## 🏗️ 技术架构
-- Frontend: HTML5 + CSS3 + JavaScript ES6+
-- Visualization: D3.js v7
-- Layout: Force-directed Graph + Custom Positioning
-- Styling: CSS Grid + Flexbox
-- Animation: CSS Transitions + D3 Animations
-## 📈 数据覆盖
-### 产业链环节
-- **🔴 芯片设计** - NVIDIA, 华为海思, AMD等
-- **🔵 晶圆制造** - 台积电, 中芯国际等  
-- **🟡 关键组件** - 台达电, 各类组件供应商
-- **🟠 HBM存储** - SK海力士, 三星, 长鑫存储
-- **🟢 组装ODM** - 广达, 纬颖, 鸿海等
-- **🟣 国产替代** - 突出展示国产化进展
-### 关键指标
-- 营收规模（单位：亿美元）
-- 供应链流量强度
-- 市场份额变化
-- 技术节点进展
-## 🚀 快速开始
-### 在线访问
-- **GitHub Pages**: 
-- **Notion嵌入**: 支持iframe嵌入任意网页
-### 本地运行
-```bash
-# 克隆项目
-git clone https://github.com/你的用户名/ai-chip-industry-map.git
-# 进入目录
-cd ai-chip-industry-map
-# 本地服务器运行 (推荐)
-python -m http.server 8000
-# 或者使用 Node.js
-npx serve .
-# 访问 http://localhost:8000
-```
+# AlphaMap Open Benchmark
 
-## 📄 数据来源
-- 各公司官方财报
-- 行业研究报告
-- 公开市场数据
-- 供应链调研信息 数据仅供参考，不构成投资建议
-## 📜 开源协议
-- 本项目采用 MIT License 开源协议
+Point-in-time AI-infrastructure evidence for reproducible public-equity research.
 
-## 👥 维护团队
-- 主要开发: Lunartulip Lab
-- 数据分析: 产业链研究团队
-- 设计支持: 可视化设计团队
+[![CI](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml/badge.svg)](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml)
+[![Contract](https://img.shields.io/badge/data_package-v1-5B8CFF)](datapackage.json)
+[![Protocol](https://img.shields.io/badge/protocol-draft_registered-12B886)](research/protocol.json)
 
-## 🎯 应用场景
-- 投资研究 - 分析产业链投资机会
-- 商业决策 - 了解竞争格局和合作伙伴
-- 学术研究 - 产业链结构分析
-- 教学展示 - 可视化教学工具
-- 行业报告 - 嵌入研究报告和PPT
-  
-如果这个项目对你有帮助，请给个⭐Star支持一下！
+## Registered question
+
+Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?
+
+AlphaMap separates that research program from the open audit sample. The repository publishes the point-in-time contract, evidence lineage, one-hop supply propagation, complete-universe feature construction, executable return alignment and falsifiable protocol. Statistical claims require the frozen production sampling frame and prospective holdout defined in SCEM-4W-v2.
+
+## Open audit sample v1
+
+| Property | Coverage |
+| --- | --- |
+| Evidence window | 2023-08-23 to 2025-03-18 |
+| Listed issuers | 6 |
+| Canonical events | 12 |
+| Atomic observations | 15 |
+| First-party documents | 11 |
+| Confirmed supply edges | 2 |
+| Timestamp basis | Explicitly observed or conservatively reconstructed |
+| Inference eligibility | No; data engineering and source audit only |
+
+The sample is small enough to reconstruct record by record. `coverage.csv` identifies its selection role and prevents accidental use as an inferential backtest.
+
+## What is measured
+
+A source event produces a direct issuer evidence impulse. When an active confirmed supplier edge exists, the same event can produce a separately labeled one-hop propagated impulse for the customer security. The registered supply-chain momentum feature is the change in 28-day decayed propagated evidence stock over four weeks.
+
+The uniform propagation coefficient is a research parameter, not an estimate of revenue exposure. Direct and propagated components remain independently inspectable. Relationship knowledge time, event type, product applicability and parallel-edge deduplication are enforced before propagation.
+
+## Temporal model
+
+Source publication -> conservative availability -> earliest tradable time -> Friday formation -> next observed session close -> 20-session forward return
+
+Historical records reconstructed after publication carry `timestamp_basis=reconstructed_conservative`. They demonstrate no-lookahead mechanics but are never represented as contemporaneously captured observations.
+
+## Quick start
+
+    python -m pip install -e ".[dev]"
+    frictionless validate datapackage.json
+    alphamap-validate data/sample/v1 --manifest
+    pytest
+    python research/run_research.py --prices examples/price_input_schema.csv
+
+Required price columns are `date`, `security_id` and `adjusted_close`. Evidence data never embeds or relicenses market prices.
+
+## Repository map
+
+- `data/sample/v1`: normalized audit sample and release manifest
+- `datapackage.json`: Frictionless tabular data package
+- `src/alphamap_open`: contract validation, signal construction and evaluation
+- `research`: pre-registration state and reproducible runner
+- `docs`: methodology, sampling, timestamps, governance and field semantics
+- [Release roadmap](docs/ROADMAP.md): first 48 hours through vendor-readiness gates
+- `CHANGELOG.md`: release history and link to the historical visualization commit
+
+## Quality principles
+
+1. Event dates never substitute for availability or execution timestamps.
+2. Issuer-reported actuals and forward statements remain distinct.
+3. No-event securities remain in the weekly cross-section with a zero score.
+4. Revisions are append-only after release.
+5. Data contracts are executable and release files are content-addressed.
+6. Baselines, costs, lags, concentration tests and falsifiers are fixed before results.
+7. A negative result is a valid registered outcome.
+
+Code is MIT licensed. AlphaMap-authored normalized data is CC BY 4.0 subject to `DATA-LICENSE.md`.

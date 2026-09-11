@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alphamap-open-data"
+version = "1.0.0b1"
+description = "Point-in-time AI infrastructure evidence for reproducible public-equity research"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = ["numpy>=1.26,<3", "pandas>=2.1,<3"]
+
+[project.optional-dependencies]
+dev = ["frictionless>=5.18,<6", "pytest>=8,<9", "ruff>=0.6,<1"]
+
+[project.scripts]
+alphamap-validate = "alphamap_open.validate:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/alphamap_open"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

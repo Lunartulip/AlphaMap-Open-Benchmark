@@ -1,0 +1,16 @@
+observation_id,vintage_id,supersedes_id,event_id,metric_name,numeric_value,text_value,unit,comparator,period_start,period_end,as_of_date,claim_label,available_at,source_id,source_locator
+OBS001,V1,,EVT001,quarterly_revenue,13.507,,billion_USD,equals,2023-05-01,2023-07-30,2023-07-30,issuer_reported_actual,2023-08-23T20:15:00Z,SRC001,Revenue by Market Platform Total row
+OBS002,V1,,EVT001,data_center_revenue,10.323,,billion_USD,equals,2023-05-01,2023-07-30,2023-07-30,issuer_reported_actual,2023-08-23T20:15:00Z,SRC001,Revenue by Market Platform Data Center row
+OBS003,V1,,EVT002,gaap_gross_margin,-0.7,,percent,equals,2023-09-01,2023-11-30,2023-11-30,issuer_reported_actual,2023-12-20T21:15:00Z,SRC002,Fiscal Q1 2024 GAAP results table
+OBS004,V1,,EVT003,business_fundamentals_direction,,improve_through_2024,category,equals,2024-01-01,2024-12-31,2023-12-20,issuer_forward_statement,2023-12-20T21:15:00Z,SRC002,CEO quotation
+OBS005,V1,,EVT004,production_status,,volume_production,category,equals,2024-02-26,2024-02-26,2024-02-26,issuer_reported_actual,2024-02-26T12:15:00Z,SRC003,Opening paragraph
+OBS008,V1,,EVT006,quarterly_revenue,6.81,,billion_USD,equals,2024-03-01,2024-05-30,2024-05-30,issuer_reported_actual,2024-06-26T20:15:00Z,SRC005,Fiscal Q3 2024 highlights
+OBS009,V1,,EVT006,data_center_revenue_qoq_growth,50,,percent,equals,2024-03-01,2024-05-30,2024-05-30,issuer_reported_actual,2024-06-26T20:15:00Z,SRC005,Headline
+OBS010,V1,,EVT007,organic_orders_yoy_growth,57,,percent,equals,2024-04-01,2024-06-30,2024-06-30,issuer_reported_actual,2024-07-24T20:15:00Z,SRC006,Headline
+OBS011,V1,,EVT008,quarterly_revenue,30.04,,billion_USD,equals,2024-04-29,2024-07-28,2024-07-28,issuer_reported_actual,2024-08-28T20:15:00Z,SRC007,Financial Highlights revenue row
+OBS012,V1,,EVT008,data_center_revenue,26.272,,billion_USD,equals,2024-04-29,2024-07-28,2024-07-28,issuer_reported_actual,2024-08-28T20:15:00Z,SRC007,Revenue by Market Platform Data Center row
+OBS013,V1,,EVT009,ai_revenue_fy2024_outlook,12,,billion_USD,approximately,2023-10-30,2024-11-03,2024-09-05,issuer_forward_statement,2024-09-05T20:15:00Z,SRC008,CEO quotation
+OBS014,V1,,EVT010,organic_orders_ttm_growth,37,,percent,equals,2023-10-01,2024-09-30,2024-09-30,issuer_reported_actual,2024-10-23T20:15:00Z,SRC009,Orders paragraph
+OBS015,V1,,EVT011,ai_revenue_fy2024,12.2,,billion_USD,equals,2023-10-30,2024-11-03,2024-11-03,issuer_reported_actual,2024-12-12T21:15:00Z,SRC010,CEO quotation
+OBS016,V1,,EVT012,quarterly_revenue,8.71,,billion_USD,equals,2024-08-30,2024-11-28,2024-11-28,issuer_reported_actual,2024-12-18T21:15:00Z,SRC011,Fiscal Q1 2025 highlights
+OBS018,V1,,EVT014,product_design_in,,nvidia_gb300,category,equals,2025-03-18,2025-03-18,2025-03-18,relationship_assertion,2025-03-18T20:15:00Z,SRC013,HBM3E 12-high paragraph

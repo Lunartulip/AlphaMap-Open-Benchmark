@@ -1,0 +1,88 @@
+{
+  "protocol_id": "SCEM-4W-v2",
+  "status": "draft_registered_pending_release",
+  "locked_at": null,
+  "lock_condition": "Tag the reviewed data contract code and sampling frame before holdout ingestion",
+  "question": "Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?",
+  "unit_of_analysis": "security-week",
+  "formation_at": "Friday 23:59:59 UTC",
+  "execution_rule": "first available daily adjusted close strictly after formation_at",
+  "primary_feature": {
+    "name": "propagated_evidence_momentum_28d",
+    "definition": "28-day decayed propagated evidence stock minus its four-week lag",
+    "relation_rule": "confirmed active one-hop supplier edge",
+    "default_propagation_weight": 0.25,
+    "weight_interpretation": "registered topological coefficient; not an economic exposure estimate",
+    "cross_section": "complete PIT universe with zero-event securities; centered percentile rank"
+  },
+  "primary_outcome": {
+    "name": "forward_universe_relative_return_leave_one_out",
+    "horizon_trading_sessions": 20,
+    "execution_price_field": "next-session adjusted_close",
+    "benchmark": "equal-weight leave-one-out frozen universe"
+  },
+  "primary_test": {
+    "statistic": "weekly Spearman rank IC",
+    "minimum_cross_section": 5,
+    "inference": "moving-date-block bootstrap",
+    "block_length_weeks": 5,
+    "bootstrap_draws": 10000
+  },
+  "universe": {
+    "production_target": "30-50 liquid listed AI-infrastructure securities with PIT membership",
+    "sample": "six-security non-inferential audit sample"
+  },
+  "periods": {
+    "historical_development": [
+      "2023-01-01",
+      "2024-12-31"
+    ],
+    "validation": [
+      "2025-01-01",
+      "2026-09-10"
+    ],
+    "prospective_holdout": [
+      "2026-09-14",
+      "2027-03-31"
+    ]
+  },
+  "baselines": [
+    "direct issuer evidence impulse",
+    "same-timestamp disclosure count",
+    "20-session price momentum",
+    "unweighted propagated evidence"
+  ],
+  "propagation_weight_sensitivity": [
+    0,
+    0.1,
+    0.25,
+    0.5
+  ],
+  "portfolio_cost_protocol": {
+    "signal": "cross-sectional feature",
+    "construction": "dollar-neutral top-minus-bottom tercile among eligible securities",
+    "rebalance": "first execution close after weekly formation",
+    "turnover": "one-way absolute weight change",
+    "costs_bps": [
+      10,
+      25,
+      50
+    ]
+  },
+  "required_robustness": [
+    "one-session and two-session additional execution lags",
+    "14 28 and 56-day half-lives",
+    "leave-one-issuer source event-type and relation-out",
+    "coverage turnover and concentration diagnostics"
+  ],
+  "falsifiers": [
+    "mean and median holdout IC are non-positive",
+    "effect disappears under one-session lag or 25 bps costs",
+    "result concentrates in one issuer source date relation or subtype",
+    "no improvement over direct disclosure and price-momentum baselines",
+    "relation propagation adds no out-of-sample information",
+    "direction labels are unstable under blinded review"
+  ],
+  "sample_policy": "data/sample/v1 is for audit and pipeline verification only; it is excluded from statistical claims",
+  "claim_gate": "No headline predictive claim before a frozen production frame completes the prospective holdout."
+}

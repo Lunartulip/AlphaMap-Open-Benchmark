@@ -1,0 +1,4 @@
+timestamp_policy_id,description,availability_rule,tradability_rule
+EXACT_PLUS_15M,Exact wire time with registered ingestion allowance,source timestamp plus 15 minutes,first market opportunity after availability
+AFTER_CLOSE_NEXT_SESSION,Reliable after-close release,source timestamp plus 15 minutes,next US regular-session open
+DATE_ONLY_NEXT_SESSION,Date-only historical reconstruction,dated US session close plus 15 minutes,next US regular-session open
