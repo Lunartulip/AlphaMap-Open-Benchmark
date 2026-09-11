@@ -229,6 +229,13 @@ def _temporal_and_semantic_checks(
                 f"relationships.csv:{row_number}: invalid effective interval"
             )
         if (
+            row["alpha_feature_eligible"] == "true"
+            and row["confidence_tier"] != "confirmed"
+        ):
+            raise ValidationError(
+                f"relationships.csv:{row_number}: eligible edge must be confirmed"
+            )
+        if (
             row["economic_exposure_known"] == "false"
             and row["weight_basis"] != "registered_uniform_topological"
         ):

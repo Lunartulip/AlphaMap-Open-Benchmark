@@ -3,7 +3,7 @@
   "version": "1.0.0-preview.1",
   "schema_version": "1.0.0",
   "release_status": "candidate",
-  "generated_at": "2026-09-11T05:18:21.074Z",
+  "generated_at": "2026-09-11T05:44:39.401Z",
   "knowledge_cutoff": "2025-03-18T20:15:00Z",
   "eligible_for_inference": false,
   "protocol_id": "SCEM-4W-v2",
@@ -19,29 +19,29 @@
       "sha256": "563a601c1f31f23bb1014f28f1f82dc21e67afb39f7d250d3362ba6e343c466e"
     },
     {
+      "path": "sources.csv",
+      "rows": 11,
+      "sha256": "ef6886b57fd75cd267f0ea69faad6ac1fb940e807395aeeb22abf1f9425ad425"
+    },
+    {
       "path": "timestamp_policies.csv",
       "rows": 3,
       "sha256": "ad127e259c7ff8c3c4ccf900b3db81b5176eeb52c8f4f76ed5bbe01185761307"
     },
     {
-      "path": "sources.csv",
-      "rows": 11,
-      "sha256": "4ab5e2ff394e2bf9ec55d7ec44d96b3cc29ecfb600ec30d459a6a65e604d10d4"
-    },
-    {
       "path": "events.csv",
       "rows": 12,
-      "sha256": "51db62e5ad8b36d23e43fca7d8af7b99c2c4e2638634387bb9fd53b62eb406ba"
+      "sha256": "2c46195c25602a400968222eea3c755fcf66cc2c43375cf806f695d877dc11e3"
     },
     {
       "path": "observations.csv",
       "rows": 15,
-      "sha256": "39b1e7cc65d8a43c6a9b5f13ccc25426aa20a643624878b8268165a6025d3034"
+      "sha256": "0835c61b47bd9c18e6f2734b1e54ca8bdd8bd712e3cd227176486b271335854c"
     },
     {
       "path": "relationships.csv",
       "rows": 2,
-      "sha256": "fc12d9250bfa60641d8ff095f3594f6cfbcf02160171bb7f2175dfd97ce20cfa"
+      "sha256": "217a72a6e85191d06238712a08c81ad89624b9ef12cfbe2d36b2695236837cd6"
     },
     {
       "path": "coverage.csv",

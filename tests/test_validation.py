@@ -48,6 +48,15 @@ def test_timestamp_policy_must_match_source_basis(tmp_path: Path) -> None:
         validate_directory(target)
 
 
+def test_only_confirmed_relationships_are_feature_eligible(tmp_path: Path) -> None:
+    target = _copy_release(tmp_path)
+    relationships = (target / "relationships.csv").read_text(encoding="utf-8")
+    relationships = relationships.replace(",confirmed,true,", ",probable,true,", 1)
+    (target / "relationships.csv").write_text(relationships, encoding="utf-8")
+    with pytest.raises(ValidationError, match="eligible edge must be confirmed"):
+        validate_directory(target)
+
+
 def test_manifest_detects_content_change(tmp_path: Path) -> None:
     target = _copy_release(tmp_path)
     with (target / "entities.csv").open("a", encoding="utf-8") as handle:

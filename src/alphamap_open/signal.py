@@ -55,6 +55,7 @@ def _expanded_impulses(
 
     relations = relationships[
         relationships["alpha_feature_eligible"].astype(str).str.lower().eq("true")
+        & relationships["confidence_tier"].eq("confirmed")
     ].copy()
     relations["tradable_from"] = pd.to_datetime(relations["tradable_from"], utc=True)
     propagated_rows: list[dict[str, object]] = []
@@ -76,9 +77,15 @@ def _expanded_impulses(
         if candidates.empty:
             continue
 
-        candidates = candidates.sort_values("tradable_from").drop_duplicates(
+        candidates["impulse_at"] = candidates["tradable_from"].where(
+            candidates["tradable_from"] >= event["tradable_from"],
+            event["tradable_from"],
+        )
+        candidates = candidates.sort_values(
+            ["impulse_at", "tradable_from", "relationship_id"]
+        ).drop_duplicates(
             ["from_security_id", "to_security_id"],
-            keep="last",
+            keep="first",
         )
         for relation in candidates.to_dict("records"):
             propagated_rows.append(
@@ -86,10 +93,7 @@ def _expanded_impulses(
                     "event_id": event["event_id"],
                     "subject_entity_id": event["subject_entity_id"],
                     "security_id": relation["to_security_id"],
-                    "impulse_at": max(
-                        event["tradable_from"],
-                        relation["tradable_from"],
-                    ),
+                    "impulse_at": relation["impulse_at"],
                     "weight": event["base_weight"]
                     * float(relation["propagation_weight"]),
                     "component": "propagated",

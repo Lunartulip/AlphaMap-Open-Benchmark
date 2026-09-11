@@ -1,6 +1,6 @@
 # Data dictionary
 
-The field-level source of truth is contracts/v1/datapackage.json. Each resource defines field name, type, nullability, enum constraints and primary key.
+The field-level source of truth is the root-level datapackage.json. Each resource defines field name, type, nullability, enum constraints and primary key.
 
 The semantic groups are:
 

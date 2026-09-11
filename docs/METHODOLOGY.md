@@ -8,7 +8,7 @@ At each Friday 23:59:59 UTC formation, the engine computes a 28-day decayed prop
 
 ## Relationship eligibility
 
-A propagated impulse is created only when both the event and the relationship were tradable knowledge by formation time. The relationship must match the event type and product prefix, and both records must be inside their validity intervals. If more than one disclosure supports the same supplier-customer path, the engine keeps the latest tradable matching edge instead of counting the path twice. The impulse time is the later of the event and relationship tradable timestamps.
+A propagated impulse is created only when both the event and the relationship were tradable knowledge by formation time. The relationship must match the event type and product prefix, and both records must be inside their validity intervals. If more than one disclosure supports the same supplier-customer path, the engine keeps the first tradable matching edge for each event and path instead of counting the path twice. Later relationship evidence cannot rewrite that event's historical feature path. The impulse time is the later of the event and selected relationship tradable timestamps.
 
 This rule prevents a relationship learned later from being projected backward, prevents unrelated supplier news from flowing across an edge, and keeps parallel evidence records auditable without amplifying the signal.
 

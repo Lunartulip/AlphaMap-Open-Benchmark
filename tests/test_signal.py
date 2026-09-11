@@ -48,6 +48,7 @@ def _relationships() -> pd.DataFrame:
                 "applicable_event_type": "production_start",
                 "applicable_product_prefix": "HBM3E",
                 "propagation_weight": 0.25,
+                "confidence_tier": "confirmed",
                 "alpha_feature_eligible": "true",
             }
         ]
@@ -79,6 +80,53 @@ def test_relation_knowledge_and_product_gate_propagation() -> None:
     assert after.loc[after["security_id"] == "SEC-C", "propagated_stock"].item() > 0
     assert "SEC-LATE" not in set(before["security_id"])
     assert "SEC-LATE" in set(result["security_id"])
+
+
+def test_unconfirmed_relation_does_not_propagate() -> None:
+    relationships = _relationships()
+    relationships.loc[0, "confidence_tier"] = "probable"
+    result = build_weekly_features(
+        _events(),
+        securities=_securities(),
+        relationships=relationships,
+        start="2026-01-02",
+        end="2026-02-06",
+    )
+    customer = result[result["security_id"] == "SEC-C"]
+    assert customer["propagated_stock"].eq(0.0).all()
+
+
+def test_future_parallel_edge_does_not_rewrite_history() -> None:
+    base = build_weekly_features(
+        _events(),
+        securities=_securities(),
+        relationships=_relationships(),
+        start="2026-01-02",
+        end="2026-02-06",
+    )
+    future = pd.concat(
+        [
+            _relationships(),
+            pd.DataFrame(
+                [
+                    {
+                        **_relationships().iloc[0].to_dict(),
+                        "relationship_id": "R2",
+                        "tradable_from": "2026-02-03T14:30:00Z",
+                    }
+                ]
+            ),
+        ],
+        ignore_index=True,
+    )
+    with_future = build_weekly_features(
+        _events(),
+        securities=_securities(),
+        relationships=future,
+        start="2026-01-02",
+        end="2026-02-06",
+    )
+    pd.testing.assert_frame_equal(base, with_future)
 
 
 def test_return_executes_after_formation() -> None:
