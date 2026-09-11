@@ -15,9 +15,13 @@
   <a href="research/protocol.json"><img src="https://img.shields.io/badge/protocol-draft_registered-12B886" alt="Draft registered protocol"></a>
 </p>
 
-![AlphaMap evidence-to-alpha research architecture](assets/visuals/alphamap-research-loop.svg)
+<a href="assets/visuals/alphamap-research-loop.svg">
+  <img src="assets/visuals/alphamap-research-loop.svg" alt="AlphaMap evidence-to-testable-signal research architecture">
+</a>
 
-## Registered question
+<sub>Open any figure to inspect the full-resolution SVG.</sub>
+
+## Pre-specified research question
 
 > **Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?**
 
@@ -29,19 +33,25 @@ AlphaMap makes the proposed path to alpha inspectable: earlier supplier evidence
 - **Graph-aware attribution:** evidence propagates only through confirmed, product-matched and time-valid supply relationships.
 - **Tradable implementation:** weekly features retain the complete universe, enforce conservative availability and execute only after formation.
 
-![Micron HBM3E evidence propagated to an NVIDIA candidate feature](assets/visuals/hbm3e-propagation-example.svg)
+<a href="assets/visuals/hbm3e-propagation-example.svg">
+  <img src="assets/visuals/hbm3e-propagation-example.svg" alt="Micron HBM3E evidence propagated to an NVIDIA candidate feature">
+</a>
 
-This trace is calculated from shipped records `EVT004` and `REL001`. At the 2024-03-01 formation, EVT004's 28-day decayed direct contribution is **0.897**; the registered 0.25 propagation coefficient produces NVIDIA propagated momentum of **+0.224** and a six-security cross-sectional feature of **+0.50**. These are feature units, not realized returns. The coefficient is a topological research parameter, not an estimate of economic exposure.
+This trace is calculated from shipped records `EVT004` and `REL001`. At the 2024-03-01 formation, EVT004's 28-day decayed direct contribution is **0.897**; the pre-specified 0.25 propagation coefficient produces NVIDIA propagated momentum of **+0.224** and a six-security cross-sectional feature of **+0.50**. These are feature units, not realized returns. The coefficient is a topological research parameter, not an estimate of economic exposure. The open sample contains two confirmed product relationships on one MU→NVDA supplier path; this version yields one feature-eligible event-edge propagation.
 
 ## Point-in-time by construction
 
-![Publication, availability, tradability, formation, execution and outcome clock](assets/visuals/pit-return-clock.svg)
+<a href="assets/visuals/pit-return-clock.svg">
+  <img src="assets/visuals/pit-return-clock.svg" alt="Publication, availability, tradability, formation, execution and outcome clock">
+</a>
 
 Historical records reconstructed after publication carry `timestamp_basis=reconstructed_conservative`. They demonstrate no-lookahead mechanics but are never represented as contemporaneously captured observations. Required market prices are supplied by the researcher and are not redistributed in this repository.
 
 ## Open audit sample v1
 
-![Issuer and claim-type coverage in the AlphaMap open audit sample](assets/visuals/audit-sample-coverage.svg)
+<a href="assets/visuals/audit-sample-coverage.svg">
+  <img src="assets/visuals/audit-sample-coverage.svg" alt="Issuer and claim-type coverage in the AlphaMap open audit sample">
+</a>
 
 | Property | Coverage |
 | --- | --- |
