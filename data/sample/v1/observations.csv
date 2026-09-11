@@ -1,0 +1,19 @@
+observation_id,vintage_id,supersedes_id,event_id,metric_name,numeric_value,text_value,unit,comparator,period_start,period_end,as_of_date,claim_label,available_at,source_id,source_locator
+OBS001,V1,,EVT001,quarterly_revenue,13.507,,billion_USD,equals,2023-05-01,2023-07-30,2023-07-30,reported_fact,2023-08-23T20:20:00Z,SRC001,Financial highlights revenue
+OBS002,V1,,EVT001,data_center_revenue,10.323,,billion_USD,equals,2023-05-01,2023-07-30,2023-07-30,reported_fact,2023-08-23T20:20:00Z,SRC001,Financial highlights data center
+OBS003,V1,,EVT002,hbm_supply_status,,sold_out,category,equals,2024-01-01,2024-12-31,2023-12-20,issuer_claim,2023-12-20T21:20:00Z,SRC002,HBM section
+OBS004,V1,,EVT003,industry_revenue_direction,,recovery_expected,category,equals,2024-01-01,2024-12-31,2023-12-20,issuer_claim,2023-12-20T21:20:00Z,SRC002,Industry outlook section
+OBS005,V1,,EVT004,production_status,,volume_production,category,equals,2024-02-26,2024-02-26,2024-02-26,reported_fact,2024-02-26T12:15:00Z,SRC003,Release body
+OBS006,V1,,EVT005,ai_revenue_fy2024,0.2,,billion_USD,greater_than,2023-01-29,2024-02-03,2024-02-03,issuer_claim,2024-03-07T21:20:00Z,SRC004,CEO comments
+OBS007,V1,,EVT005,ai_revenue_fy2025_outlook,0.55,,billion_USD,greater_than,2024-02-04,2025-02-01,2024-03-07,issuer_claim,2024-03-07T21:20:00Z,SRC004,CEO comments
+OBS008,V1,,EVT006,hbm_supply_status,,sold_out,category,equals,2024-01-01,2024-12-31,2024-06-26,issuer_claim,2024-06-26T20:20:00Z,SRC005,HBM demand section
+OBS009,V1,,EVT006,hbm_allocation_status,,substantially_allocated,category,equals,2025-01-01,2025-12-31,2024-06-26,issuer_claim,2024-06-26T20:20:00Z,SRC005,HBM demand section
+OBS010,V1,,EVT007,organic_orders_yoy_growth,57,,percent,equals,2024-04-01,2024-06-30,2024-06-30,reported_fact,2024-07-24T10:15:00Z,SRC006,Headline
+OBS011,V1,,EVT008,quarterly_revenue,30.04,,billion_USD,equals,2024-04-29,2024-07-28,2024-07-28,reported_fact,2024-08-28T20:20:00Z,SRC007,Financial highlights revenue
+OBS012,V1,,EVT008,data_center_revenue,26.272,,billion_USD,equals,2024-04-29,2024-07-28,2024-07-28,reported_fact,2024-08-28T20:20:00Z,SRC007,Financial highlights data center
+OBS013,V1,,EVT009,ai_revenue_fy2024_outlook,12,,billion_USD,approximately,2023-10-30,2024-11-03,2024-09-05,issuer_claim,2024-09-05T20:20:00Z,SRC008,CEO AI revenue outlook
+OBS014,V1,,EVT010,organic_orders_ttm_growth,37,,percent,equals,2023-10-01,2024-09-30,2024-09-30,reported_fact,2024-10-23T10:15:00Z,SRC009,Orders section
+OBS015,V1,,EVT011,ai_revenue_fy2024,12.2,,billion_USD,equals,2023-10-30,2024-11-03,2024-11-03,reported_fact,2024-12-12T21:20:00Z,SRC010,Full-year AI revenue
+OBS016,V1,,EVT012,hbm_supply_status,,sold_out,category,equals,2025-01-01,2025-12-31,2024-12-18,issuer_claim,2024-12-18T21:20:00Z,SRC011,HBM demand section
+OBS017,V1,,EVT013,revenue_growth_2025_outlook,17,,percent,approximately,2025-01-01,2025-12-31,2025-02-18,issuer_claim,2025-02-18T21:20:00Z,SRC012,2025 outlook
+OBS018,V1,,EVT014,product_design_in,,nvidia_gb300,category,equals,2025-03-18,2025-03-18,2025-03-18,relationship_assertion,2025-03-18T20:15:00Z,SRC013,HBM3E 12-high GB300 section

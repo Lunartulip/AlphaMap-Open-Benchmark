@@ -1,0 +1,7 @@
+entity_id,legal_name,domicile,infrastructure_layer
+ENTITY_NVDA,NVIDIA Corporation,US,accelerator
+ENTITY_MU,Micron Technology Inc.,US,memory
+ENTITY_VRT,Vertiv Holdings Co,US,power_and_cooling
+ENTITY_AVGO,Broadcom Inc.,US,custom_silicon_and_networking
+ENTITY_MRVL,Marvell Technology Inc.,US,custom_silicon_and_networking
+ENTITY_ANET,Arista Networks Inc.,US,networking

@@ -1,76 +1,66 @@
-# 🔬 AI芯片产业链可视化图谱
-一个基于D3.js的交互式AI芯片产业链价值网络可视化工具，展示2025年全球AI芯片生态系统的关键参与者及其价值流动关系。
-## 🌟 项目特色
-- **实时数据展示** - 基于2025年Q2最新产业数据
-- **交互式体验** - 支持节点点击、悬停查看详情
-- **多维度分析** - 按时间周期、产业链环节筛选
-- **移动端适配** - 响应式设计，支持各种设备
-- **国产化视角** - 突出展示国产替代进展
-## 🎯 核心功能
-### 📊 数据可视化
-- **节点大小** - 代表公司营收规模
-- **连线粗细** - 表示供应链流量强度
-- **颜色编码** - 区分不同产业链环节
-- **布局算法** - 智能节点位置优化
-### 🎛️ 交互控制
-- **时间选择器** - 2024Q4 / 2025Q2 / 2025Q4
-- **视图模式** - 全链路 / 英伟达生态 / 华为链条 / HBM供应链
-- **实时筛选** - 动态更新图表内容
-- **详情悬浮** - 鼠标悬停查看公司详情
-## 🏗️ 技术架构
-- Frontend: HTML5 + CSS3 + JavaScript ES6+
-- Visualization: D3.js v7
-- Layout: Force-directed Graph + Custom Positioning
-- Styling: CSS Grid + Flexbox
-- Animation: CSS Transitions + D3 Animations
-## 📈 数据覆盖
-### 产业链环节
-- **🔴 芯片设计** - NVIDIA, 华为海思, AMD等
-- **🔵 晶圆制造** - 台积电, 中芯国际等  
-- **🟡 关键组件** - 台达电, 各类组件供应商
-- **🟠 HBM存储** - SK海力士, 三星, 长鑫存储
-- **🟢 组装ODM** - 广达, 纬颖, 鸿海等
-- **🟣 国产替代** - 突出展示国产化进展
-### 关键指标
-- 营收规模（单位：亿美元）
-- 供应链流量强度
-- 市场份额变化
-- 技术节点进展
-## 🚀 快速开始
-### 在线访问
-- **GitHub Pages**: 
-- **Notion嵌入**: 支持iframe嵌入任意网页
-### 本地运行
-```bash
-# 克隆项目
-git clone https://github.com/你的用户名/ai-chip-industry-map.git
-# 进入目录
-cd ai-chip-industry-map
-# 本地服务器运行 (推荐)
-python -m http.server 8000
-# 或者使用 Node.js
-npx serve .
-# 访问 http://localhost:8000
-```
+# AlphaMap Open Benchmark
 
-## 📄 数据来源
-- 各公司官方财报
-- 行业研究报告
-- 公开市场数据
-- 供应链调研信息 数据仅供参考，不构成投资建议
-## 📜 开源协议
-- 本项目采用 MIT License 开源协议
+Point-in-time AI-infrastructure evidence for reproducible public-equity research.
 
-## 👥 维护团队
-- 主要开发: Lunartulip Lab
-- 数据分析: 产业链研究团队
-- 设计支持: 可视化设计团队
+[![CI](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml/badge.svg)](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml)
+[![Contract](https://img.shields.io/badge/data_contract-v1-5B8CFF)](contracts/v1/dataset.schema.json)
+[![Protocol](https://img.shields.io/badge/research-design_locked-12B886)](research/protocol.json)
 
-## 🎯 应用场景
-- 投资研究 - 分析产业链投资机会
-- 商业决策 - 了解竞争格局和合作伙伴
-- 学术研究 - 产业链结构分析
-- 教学展示 - 可视化教学工具
-- 行业报告 - 嵌入研究报告和PPT
-  
-如果这个项目对你有帮助，请给个⭐Star支持一下！
+## Registered question
+
+Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?
+
+This repository publishes the data contract, point-in-time sample, deterministic feature construction and falsifiable evaluation protocol required to answer that question. It makes no performance claim before a prospective holdout is complete.
+
+## Open sample v1
+
+| Property | Coverage |
+| --- | --- |
+| Evidence window | 2023-08-23 to 2025-03-18 |
+| Listed issuers | 6 |
+| Canonical events | 14 |
+| Atomic observations | 18 |
+| First-party documents | 13 |
+| Return horizon | 20 trading sessions |
+| Timestamp standard | UTC availability plus earliest tradable session |
+
+The sample is deliberately small enough to audit source by source. It demonstrates semantics and temporal controls; it is not presented as a statistically powered backtest.
+
+## Architecture
+
+Source document -> source record -> canonical event -> atomic observation -> weekly evidence score -> forward relative return
+
+Every investable record has stable issuer and security identifiers, a source locator, claim label, publication time, conservative availability time, earliest tradable time and append-only vintage. Relationship propagation stays off unless economic exposure is attributable and independently reviewable.
+
+## Quick start
+
+    python -m pip install -e ".[dev]"
+    alphamap-validate data/sample/v1 --manifest
+    pytest
+    python research/run_research.py --prices examples/price_input_schema.csv
+
+Price input is intentionally user-supplied. Required columns are date, security_id and adjusted_close. Optional sector enables sector-relative outcomes.
+
+## Repository map
+
+- data/sample/v1: versioned records and release manifest
+- contracts/v1: machine-readable contract
+- src/alphamap_open: validation, features and evaluation
+- research: locked protocol and reproducible runner
+- docs: methodology, timestamps, governance and dictionary
+- legacy: frozen historical visualization retained for provenance
+
+## Design principles
+
+1. Point-in-time by construction: event dates never substitute for availability.
+2. Claims are typed: reported facts, issuer statements and derived values remain distinct.
+3. Revisions are append-only and prior releases remain addressable.
+4. Identifiers are stable; tickers are attributes, not entity keys.
+5. Baselines, lags, costs, concentration tests and holdout rules are specified before results.
+6. A negative research result is a valid outcome.
+
+See [Data Card](docs/DATA_CARD.md), [Methodology](docs/METHODOLOGY.md), [Timestamp Policy](docs/TIMESTAMP_POLICY.md) and [Governance](docs/GOVERNANCE.md).
+
+## Licensing
+
+Code is MIT licensed. AlphaMap-authored normalized sample records are CC BY 4.0 subject to DATA-LICENSE.md. Third-party documents remain governed by their publishers.

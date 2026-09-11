@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite the release manifest and repository."
+title: "AlphaMap Open Benchmark"
+type: dataset
+authors:
+  - family-names: "LunarTulip"
+repository-code: "https://github.com/Lunartulip/ai-chip-industry-map"
+url: "https://github.com/Lunartulip/ai-chip-industry-map"
+license: MIT
+version: "1.0.0-preview.1"
+date-released: "2026-09-11"

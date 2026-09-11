@@ -1,0 +1,4 @@
+timestamp_policy_id,description,availability_rule,tradability_rule
+EXACT_PLUS_15M,Exact source time with ingestion allowance,source timestamp plus 15 minutes,first regular-session opportunity after availability
+AFTER_CLOSE_NEXT_SESSION,Reliable after-close release,source timestamp plus 15 minutes,next US regular-session open
+DATE_ONLY_NEXT_SESSION,Only publication date is verified,dated session close plus 15 minutes,next US regular-session open

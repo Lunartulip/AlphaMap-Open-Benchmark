@@ -1,0 +1,44 @@
+{
+  "dataset": "alphamap-open-benchmark",
+  "version": "1.0.0-preview.1",
+  "schema_version": "1.0.0",
+  "released_at": "2026-09-11T00:00:00Z",
+  "knowledge_cutoff": "2025-03-18T20:15:00Z",
+  "files": [
+    {
+      "path": "entities.csv",
+      "rows": 6,
+      "sha256": "61e972699d5154e5ae6b8628d3187c940318b53a381c9746b48e3d63b3652267"
+    },
+    {
+      "path": "security_mappings.csv",
+      "rows": 6,
+      "sha256": "3d51bcb5388c01eb8d0b74a5dba723feaf842ddddafaafac017f1ba3402e51b1"
+    },
+    {
+      "path": "sources.csv",
+      "rows": 13,
+      "sha256": "351ba3368a28a6bc4225900f4b83a7910ae7bb8dc750c8511736fde622299c28"
+    },
+    {
+      "path": "timestamp_policies.csv",
+      "rows": 3,
+      "sha256": "e8d22ba9b81129231c9b8d6ac132ed9115db4e86c9f4c55b54cc00118370daa3"
+    },
+    {
+      "path": "events.csv",
+      "rows": 14,
+      "sha256": "cdaafd8bc1ab94449c3a14f52269745c66ef4930f5034b0acdf4b852a2f1816e"
+    },
+    {
+      "path": "observations.csv",
+      "rows": 18,
+      "sha256": "f2176b6e6c955fe8781deac055bb00feecfc00488cf3653a59ff0a7437864cd8"
+    },
+    {
+      "path": "relationships.csv",
+      "rows": 2,
+      "sha256": "ad6eb58ab0f4f2140126f817f8637ab2690515ab10c49f7655092203bf652f2a"
+    }
+  ]
+}

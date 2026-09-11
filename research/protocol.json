@@ -1,0 +1,69 @@
+{
+  "protocol_id": "SCEM-4W-v1",
+  "status": "design_locked_no_results",
+  "locked_at": "2026-09-11T00:00:00Z",
+  "question": "Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?",
+  "unit_of_analysis": "security-week",
+  "formation_time": "Friday 23:59:59 UTC; tradable_from must not exceed formation time",
+  "primary_feature": {
+    "name": "evidence_momentum_28d",
+    "decay_half_life_days": 28,
+    "cross_section": "centered percentile rank",
+    "relationship_propagation": false
+  },
+  "primary_outcome": {
+    "name": "forward_sector_relative_return",
+    "horizon_trading_sessions": 20,
+    "price_field": "adjusted_close"
+  },
+  "primary_test": {
+    "statistic": "weekly Spearman rank IC",
+    "minimum_cross_section": 5,
+    "inference": "date-block bootstrap"
+  },
+  "universe": {
+    "production_target": "30-50 liquid listed AI-infrastructure securities",
+    "sample": "six schema-demonstration securities"
+  },
+  "periods": {
+    "historical_development": [
+      "2023-01-01",
+      "2024-12-31"
+    ],
+    "validation": [
+      "2025-01-01",
+      "2026-09-10"
+    ],
+    "prospective_holdout": [
+      "2026-09-14",
+      "2027-03-31"
+    ]
+  },
+  "baselines": [
+    "same-timestamp disclosure count",
+    "20-session price momentum",
+    "unweighted signed evidence"
+  ],
+  "costs_bps": [
+    10,
+    25,
+    50
+  ],
+  "required_robustness": [
+    "15-minute one-session and two-session lags",
+    "14 28 and 56-day half-lives",
+    "leave-one-issuer-out",
+    "leave-one-source-out",
+    "leave-one-event-type-out",
+    "coverage turnover and concentration diagnostics"
+  ],
+  "falsifiers": [
+    "median and mean IC are non-positive",
+    "effect disappears under one-session lag or 25 bps costs",
+    "result concentrates in one issuer source date or subtype",
+    "no improvement over disclosure count and price momentum",
+    "relationship propagation adds no out-of-sample information",
+    "direction labels are unstable under blinded review"
+  ],
+  "claim_gate": "No headline predictive claim before the prospective holdout is complete."
+}
