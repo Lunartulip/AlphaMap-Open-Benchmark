@@ -31,7 +31,7 @@ AlphaMap makes the proposed path to alpha inspectable: earlier supplier evidence
 
 ![Micron HBM3E evidence propagated to an NVIDIA candidate feature](assets/visuals/hbm3e-propagation-example.svg)
 
-This trace is calculated from shipped records `EVT004` and `REL001`. At the 2024-03-01 formation, the 28-day decayed direct stock is **0.897**; the registered 0.25 propagation coefficient produces NVIDIA propagated momentum of **+0.224** and a six-security cross-sectional feature of **+0.50**. These are feature units, not realized returns. The coefficient is a topological research parameter, not an estimate of economic exposure.
+This trace is calculated from shipped records `EVT004` and `REL001`. At the 2024-03-01 formation, EVT004's 28-day decayed direct contribution is **0.897**; the registered 0.25 propagation coefficient produces NVIDIA propagated momentum of **+0.224** and a six-security cross-sectional feature of **+0.50**. These are feature units, not realized returns. The coefficient is a topological research parameter, not an estimate of economic exposure.
 
 ## Point-in-time by construction
 
@@ -84,7 +84,7 @@ Required price columns are `date`, `security_id` and `adjusted_close`.
 - [Release roadmap](docs/ROADMAP.md): first 48 hours through vendor-readiness gates
 - `CHANGELOG.md`: release history and link to the historical visualization commit
 
-## Quality/catalog principles
+## Quality principles
 
 1. Event dates never substitute for availability or execution timestamps.
 2. Issuer-reported actuals and forward statements remain distinct.
