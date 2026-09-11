@@ -24,10 +24,10 @@ def _active_security_ids(
     securities: pd.DataFrame,
     formation_at: pd.Timestamp,
 ) -> list[str]:
-    day = formation_at.tz_convert("UTC").date()
-    valid_from = pd.to_datetime(securities["valid_from"]).dt.date
-    valid_to = pd.to_datetime(securities["valid_to"], errors="coerce").dt.date
-    active = (valid_from <= day) & (valid_to.isna() | (valid_to >= day))
+    day = formation_at.tz_convert("UTC").date().isoformat()
+    valid_from = securities["valid_from"].astype(str)
+    valid_to = securities["valid_to"].fillna("").astype(str)
+    active = valid_from.le(day) & (valid_to.eq("") | valid_to.ge(day))
     return securities.loc[active, "security_id"].drop_duplicates().tolist()
 
 
