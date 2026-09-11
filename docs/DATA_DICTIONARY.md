@@ -1,9 +1,16 @@
 # Data dictionary
 
-entities.csv stores immutable issuer keys and descriptive attributes. security_mappings.csv stores stable instrument keys with point-in-time ticker validity.
+The field-level source of truth is contracts/v1/datapackage.json. Each resource defines field name, type, nullability, enum constraints and primary key.
 
-sources.csv identifies first-party documents, publication precision and narrow source locators. events.csv stores the disclosing actor, impacted security, event taxonomy, typed claim, timing, eligibility and summary.
+The semantic groups are:
 
-observations.csv contains exactly one numeric_value or text_value per row with metric, unit, comparator, period and locator. relationships.csv contains time-bounded supply-chain edges; alpha_feature_eligible remains false until economic exposure is attributable.
+- identity: immutable entity_id and security_id; ticker validity is bounded by dataset coverage;
+- provenance: source_id, URL, version, access state, locator and optional document hash;
+- timing: published_at, available_at, tradable_from and timestamp basis;
+- evidence: event type, stage, direction and claim label;
+- values: one numeric or text observation with explicit unit, comparator and period;
+- network: time-bounded directed relationship, registered propagation weight and economic-exposure flag;
+- coverage: closed audit inventory and inference eligibility;
+- revision: vintage_id and supersedes_id.
 
-release_manifest.json records version, release time, schema version, row counts and SHA-256 for every distributed table.
+Unknown values are blank only where the contract permits null. Zero, false and not observed are never encoded as blank.

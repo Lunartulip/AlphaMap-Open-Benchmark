@@ -1,7 +1,7 @@
 # Architecture
 
-The system separates five layers: immutable source evidence; canonical events and atomic observations; point-in-time timestamps, identifiers and vintages; deterministic research features and outcomes; and assurance through contracts, hashes, tests and governance.
+The data plane separates source documents, canonical events, atomic observations, point-in-time identities, directed supply relationships and coverage records. The research plane independently produces direct evidence stock, propagated evidence stock, four-week evidence momentum, execution-aligned outcomes and diagnostics.
 
-The CSV surface is a portable reference implementation. Production should publish append-only Parquet partitions by knowledge date, revision feeds, exchange-calendar and security-master history, and signed manifests.
+Signal formation cannot infer missing timestamps. The price adapter maps formation to the first later observed session close. Evidence and price licenses remain separate.
 
-Source parsing cannot mutate released semantic records. Identifier changes cannot rewrite entity history. Market prices remain outside the evidence license boundary. Signal code consumes validated tables and cannot infer missing timestamps.
+Production extends the CSV reference with append-only Parquet partitions by knowledge date, exchange-calendar and security-master history, first-seen capture logs, immutable document hashes, signed release manifests and revision feeds.

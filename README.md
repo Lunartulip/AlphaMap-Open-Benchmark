@@ -3,34 +3,41 @@
 Point-in-time AI-infrastructure evidence for reproducible public-equity research.
 
 [![CI](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml/badge.svg)](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml)
-[![Contract](https://img.shields.io/badge/data_contract-v1-5B8CFF)](contracts/v1/dataset.schema.json)
-[![Protocol](https://img.shields.io/badge/research-design_locked-12B886)](research/protocol.json)
+[![Contract](https://img.shields.io/badge/data_package-v1-5B8CFF)](contracts/v1/datapackage.json)
+[![Protocol](https://img.shields.io/badge/protocol-draft_registered-12B886)](research/protocol.json)
 
 ## Registered question
 
 Does supply-chain evidence momentum predict AI-infrastructure companies' next four-week relative returns?
 
-This repository publishes the data contract, point-in-time sample, deterministic feature construction and falsifiable evaluation protocol required to answer that question. It makes no performance claim before a prospective holdout is complete.
+AlphaMap separates that research program from the open audit sample. The repository publishes the point-in-time contract, evidence lineage, one-hop supply propagation, complete-universe feature construction, executable return alignment and falsifiable protocol. Statistical claims require the frozen production sampling frame and prospective holdout defined in SCEM-4W-v2.
 
-## Open sample v1
+## Open audit sample v1
 
 | Property | Coverage |
 | --- | --- |
 | Evidence window | 2023-08-23 to 2025-03-18 |
 | Listed issuers | 6 |
-| Canonical events | 14 |
-| Atomic observations | 18 |
-| First-party documents | 13 |
-| Return horizon | 20 trading sessions |
-| Timestamp standard | UTC availability plus earliest tradable session |
+| Canonical events | 12 |
+| Atomic observations | 15 |
+| First-party documents | 11 |
+| Confirmed supply edges | 2 |
+| Timestamp basis | Explicitly observed or conservatively reconstructed |
+| Inference eligibility | No; data engineering and source audit only |
 
-The sample is deliberately small enough to audit source by source. It demonstrates semantics and temporal controls; it is not presented as a statistically powered backtest.
+The sample is small enough to reconstruct record by record. coverage.csv identifies its selection role and prevents accidental use as an inferential backtest.
 
-## Architecture
+## What is measured
 
-Source document -> source record -> canonical event -> atomic observation -> weekly evidence score -> forward relative return
+A source event produces a direct issuer evidence impulse. When an active confirmed supplier edge exists, the same event can produce a separately labeled one-hop propagated impulse for the customer security. The registered supply-chain momentum feature is the change in 28-day decayed propagated evidence stock over four weeks.
 
-Every investable record has stable issuer and security identifiers, a source locator, claim label, publication time, conservative availability time, earliest tradable time and append-only vintage. Relationship propagation stays off unless economic exposure is attributable and independently reviewable.
+The uniform propagation coefficient is a research parameter, not an estimate of revenue exposure. Direct and propagated components remain independently inspectable.
+
+## Temporal model
+
+Source publication -> conservative availability -> earliest tradable time -> Friday formation -> next observed session close -> 20-session forward return
+
+Historical records reconstructed after publication carry timestamp_basis=reconstructed_conservative. They demonstrate no-lookahead mechanics but are never represented as contemporaneously captured observations.
 
 ## Quick start
 
@@ -39,28 +46,25 @@ Every investable record has stable issuer and security identifiers, a source loc
     pytest
     python research/run_research.py --prices examples/price_input_schema.csv
 
-Price input is intentionally user-supplied. Required columns are date, security_id and adjusted_close. Optional sector enables sector-relative outcomes.
+Required price columns are date, security_id and adjusted_close. Evidence data never embeds or relicenses market prices.
 
 ## Repository map
 
-- data/sample/v1: versioned records and release manifest
-- contracts/v1: machine-readable contract
-- src/alphamap_open: validation, features and evaluation
-- research: locked protocol and reproducible runner
-- docs: methodology, timestamps, governance and dictionary
-- legacy: frozen historical visualization retained for provenance
+- data/sample/v1: normalized audit sample and release manifest
+- contracts/v1/datapackage.json: Frictionless-compatible tabular contract
+- src/alphamap_open: contract validation, signal construction and evaluation
+- research: pre-registration state and reproducible runner
+- docs: methodology, sampling, timestamps, governance and field semantics
+- CHANGELOG.md: release history and link to the historical visualization commit
 
-## Design principles
+## Quality principles
 
-1. Point-in-time by construction: event dates never substitute for availability.
-2. Claims are typed: reported facts, issuer statements and derived values remain distinct.
-3. Revisions are append-only and prior releases remain addressable.
-4. Identifiers are stable; tickers are attributes, not entity keys.
-5. Baselines, lags, costs, concentration tests and holdout rules are specified before results.
-6. A negative research result is a valid outcome.
+1. Event dates never substitute for availability or execution timestamps.
+2. Issuer-reported actuals and forward statements remain distinct.
+3. No-event securities remain in the weekly cross-section with a zero score.
+4. Revisions are append-only after release.
+5. Data contracts are executable and release files are content-addressed.
+6. Baselines, costs, lags, concentration tests and falsifiers are fixed before results.
+7. A negative result is a valid registered outcome.
 
-See [Data Card](docs/DATA_CARD.md), [Methodology](docs/METHODOLOGY.md), [Timestamp Policy](docs/TIMESTAMP_POLICY.md) and [Governance](docs/GOVERNANCE.md).
-
-## Licensing
-
-Code is MIT licensed. AlphaMap-authored normalized sample records are CC BY 4.0 subject to DATA-LICENSE.md. Third-party documents remain governed by their publishers.
+Code is MIT licensed. AlphaMap-authored normalized data is CC BY 4.0 subject to DATA-LICENSE.md.

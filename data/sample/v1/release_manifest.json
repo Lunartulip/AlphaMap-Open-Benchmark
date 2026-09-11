@@ -2,8 +2,11 @@
   "dataset": "alphamap-open-benchmark",
   "version": "1.0.0-preview.1",
   "schema_version": "1.0.0",
-  "released_at": "2026-09-11T00:00:00Z",
+  "release_status": "candidate",
+  "generated_at": "2026-09-11T05:00:50.497Z",
   "knowledge_cutoff": "2025-03-18T20:15:00Z",
+  "eligible_for_inference": false,
+  "protocol_id": "SCEM-4W-v2",
   "files": [
     {
       "path": "entities.csv",
@@ -13,32 +16,37 @@
     {
       "path": "security_mappings.csv",
       "rows": 6,
-      "sha256": "3d51bcb5388c01eb8d0b74a5dba723feaf842ddddafaafac017f1ba3402e51b1"
-    },
-    {
-      "path": "sources.csv",
-      "rows": 13,
-      "sha256": "351ba3368a28a6bc4225900f4b83a7910ae7bb8dc750c8511736fde622299c28"
+      "sha256": "563a601c1f31f23bb1014f28f1f82dc21e67afb39f7d250d3362ba6e343c466e"
     },
     {
       "path": "timestamp_policies.csv",
       "rows": 3,
-      "sha256": "e8d22ba9b81129231c9b8d6ac132ed9115db4e86c9f4c55b54cc00118370daa3"
+      "sha256": "ad127e259c7ff8c3c4ccf900b3db81b5176eeb52c8f4f76ed5bbe01185761307"
+    },
+    {
+      "path": "sources.csv",
+      "rows": 11,
+      "sha256": "3bcc941f7d43765370196bc40b3175f24d52f0a3158d8f33bc11e00b0407c3f6"
     },
     {
       "path": "events.csv",
-      "rows": 14,
-      "sha256": "cdaafd8bc1ab94449c3a14f52269745c66ef4930f5034b0acdf4b852a2f1816e"
+      "rows": 12,
+      "sha256": "51db62e5ad8b36d23e43fca7d8af7b99c2c4e2638634387bb9fd53b62eb406ba"
     },
     {
       "path": "observations.csv",
-      "rows": 18,
-      "sha256": "f2176b6e6c955fe8781deac055bb00feecfc00488cf3653a59ff0a7437864cd8"
+      "rows": 15,
+      "sha256": "39b1e7cc65d8a43c6a9b5f13ccc25426aa20a643624878b8268165a6025d3034"
     },
     {
       "path": "relationships.csv",
       "rows": 2,
-      "sha256": "ad6eb58ab0f4f2140126f817f8637ab2690515ab10c49f7655092203bf652f2a"
+      "sha256": "84545401a4f0a3d4e2cb36967449f2df8f4f1e5fffea11fa83db27443962e0d0"
+    },
+    {
+      "path": "coverage.csv",
+      "rows": 11,
+      "sha256": "6c115c111a8645354be038f5a9cd885d45b5fea3f164087c91d6478c4156e870"
     }
   ]
 }

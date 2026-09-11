@@ -4,118 +4,143 @@ import argparse
 import csv
 import hashlib
 import json
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
-from typing import Iterable
+from typing import Any
 
 
 class ValidationError(ValueError):
-    """Raised when a release violates the published data contract."""
+    """Raised when a release violates the executable data contract."""
 
 
-REQUIRED = {
-    "entities.csv": ["entity_id", "legal_name", "domicile", "infrastructure_layer"],
-    "security_mappings.csv": [
-        "security_id", "entity_id", "ticker", "exchange", "currency", "valid_from", "valid_to"
-    ],
-    "sources.csv": [
-        "source_id", "source_type", "publisher", "title", "url", "published_at",
-        "publication_precision", "retrieved_at", "source_locator"
-    ],
-    "timestamp_policies.csv": [
-        "timestamp_policy_id", "description", "availability_rule", "tradability_rule"
-    ],
-    "events.csv": [
-        "event_id", "vintage_id", "subject_entity_id", "impact_entity_id", "security_id",
-        "event_type", "evidence_stage", "direction", "claim_label", "published_at",
-        "available_at", "tradable_from", "timestamp_policy_id", "alpha_feature_eligible",
-        "source_id", "source_locator", "summary"
-    ],
-    "observations.csv": [
-        "observation_id", "vintage_id", "event_id", "metric_name", "numeric_value",
-        "text_value", "unit", "comparator", "period_start", "period_end", "as_of_date",
-        "claim_label", "available_at", "source_id", "source_locator"
-    ],
-    "relationships.csv": [
-        "relationship_id", "vintage_id", "from_entity_id", "to_entity_id",
-        "relationship_type", "product", "valid_from", "valid_to", "confidence_tier",
-        "alpha_feature_eligible", "source_id", "source_locator"
-    ],
-}
-
-PRIMARY_KEYS = {
-    "entities.csv": ["entity_id"],
-    "security_mappings.csv": ["security_id", "valid_from"],
-    "sources.csv": ["source_id"],
-    "timestamp_policies.csv": ["timestamp_policy_id"],
-    "events.csv": ["event_id", "vintage_id"],
-    "observations.csv": ["observation_id", "vintage_id"],
-    "relationships.csv": ["relationship_id", "vintage_id"],
-}
-
-ENUMS = {
-    "direction": {"negative", "neutral", "positive"},
-    "claim_label": {
-        "reported_fact", "issuer_claim", "derived_value", "estimate",
-        "relationship_assertion"
-    },
-    "publication_precision": {"exact", "date_only"},
-    "alpha_feature_eligible": {"true", "false"},
-    "confidence_tier": {"confirmed", "corroborated", "indicated"},
-}
-
-
-def _read(path: Path) -> list[dict[str, str]]:
-    with path.open(newline="", encoding="utf-8") as handle:
-        return list(csv.DictReader(handle))
+def _parse_date(value: str, context: str) -> date:
+    try:
+        return date.fromisoformat(value)
+    except ValueError as exc:
+        raise ValidationError(f"{context}: invalid ISO date {value!r}") from exc
 
 
 def _parse_time(value: str, context: str) -> datetime:
     try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        result = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as exc:
-        raise ValidationError(f"{context}: invalid ISO-8601 timestamp {value!r}") from exc
+        raise ValidationError(f"{context}: invalid ISO datetime {value!r}") from exc
+    if result.tzinfo is None:
+        raise ValidationError(f"{context}: datetime must include a UTC offset")
+    return result
 
 
-def _require_columns(name: str, rows: list[dict[str, str]]) -> None:
+def _read(path: Path) -> tuple[list[str], list[dict[str, str]]]:
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+    if reader.fieldnames is None:
+        raise ValidationError(f"{path.name}: missing header")
+    if any(None in row for row in rows):
+        raise ValidationError(f"{path.name}: malformed row has extra fields")
+    return reader.fieldnames, rows
+
+
+def _contract(root: Path) -> dict[str, dict[str, Any]]:
+    path = root.parents[2] / "contracts" / "v1" / "datapackage.json"
+    package = json.loads(path.read_text(encoding="utf-8"))
+    if package.get("profile") != "tabular-data-package":
+        raise ValidationError("contract: expected tabular-data-package profile")
+    return {resource["path"]: resource for resource in package["resources"]}
+
+
+def _validate_field(value: str, field: dict[str, Any], context: str) -> None:
+    constraints = field.get("constraints", {})
+    if constraints.get("required") and value == "":
+        raise ValidationError(f"{context}: required value is blank")
+    if value == "":
+        return
+    kind = field.get("type", "string")
+    try:
+        if kind == "number":
+            float(value)
+        elif kind == "boolean" and value not in {"true", "false"}:
+            raise ValueError
+        elif kind == "date":
+            date.fromisoformat(value)
+        elif kind == "datetime":
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if parsed.tzinfo is None:
+                raise ValueError
+    except ValueError as exc:
+        raise ValidationError(f"{context}: invalid {kind} value {value!r}") from exc
+    allowed = constraints.get("enum")
+    if allowed and value not in allowed:
+        raise ValidationError(f"{context}: value {value!r} is outside {allowed}")
+
+
+def _validate_resource(
+    name: str,
+    resource: dict[str, Any],
+    root: Path,
+) -> list[dict[str, str]]:
+    headers, rows = _read(root / name)
+    fields = resource["schema"]["fields"]
+    expected = [field["name"] for field in fields]
+    if headers != expected:
+        raise ValidationError(f"{name}: header differs from executable contract")
     if not rows:
         raise ValidationError(f"{name}: table must contain at least one row")
-    missing = set(REQUIRED[name]) - set(rows[0])
-    if missing:
-        raise ValidationError(f"{name}: missing columns {sorted(missing)}")
-
-
-def _unique(name: str, rows: list[dict[str, str]]) -> None:
-    keys = PRIMARY_KEYS[name]
+    for row_number, row in enumerate(rows, start=2):
+        for field in fields:
+            _validate_field(
+                row[field["name"]],
+                field,
+                f"{name}:{row_number}:{field['name']}",
+            )
+    primary = resource["schema"]["primaryKey"]
+    keys = [primary] if isinstance(primary, str) else primary
     values = [tuple(row[key] for key in keys) for row in rows]
     if len(values) != len(set(values)):
         raise ValidationError(f"{name}: duplicate primary key")
-
-
-def _check_enums(name: str, rows: list[dict[str, str]]) -> None:
-    for row_number, row in enumerate(rows, start=2):
-        for field, allowed in ENUMS.items():
-            if field in row and row[field] and row[field] not in allowed:
-                raise ValidationError(
-                    f"{name}:{row_number}: {field}={row[field]!r} is outside the contract"
-                )
+    return rows
 
 
 def _require_fk(
-    rows: Iterable[dict[str, str]],
+    tables: dict[str, list[dict[str, str]]],
+    table: str,
     field: str,
-    valid: set[str],
-    context: str,
+    parent_table: str,
+    parent_field: str,
 ) -> None:
-    for row_number, row in enumerate(rows, start=2):
-        if row[field] not in valid:
+    parents = {row[parent_field] for row in tables[parent_table]}
+    for row_number, row in enumerate(tables[table], start=2):
+        if row[field] not in parents:
             raise ValidationError(
-                f"{context}:{row_number}: {field}={row[field]!r} has no parent record"
+                f"{table}:{row_number}: {field}={row[field]!r} has no parent"
             )
 
 
-def _check_temporal(events: list[dict[str, str]]) -> None:
-    for row_number, row in enumerate(events, start=2):
+def _temporal_and_semantic_checks(
+    tables: dict[str, list[dict[str, str]]],
+) -> None:
+    securities = {row["security_id"]: row for row in tables["security_mappings.csv"]}
+    sources = {row["source_id"]: row for row in tables["sources.csv"]}
+    events = {row["event_id"]: row for row in tables["events.csv"]}
+
+    for row_number, row in enumerate(tables["sources.csv"], start=2):
+        published = _parse_time(row["published_at"], f"sources.csv:{row_number}")
+        if row["publication_precision"] == "date_only":
+            if any((published.hour, published.minute, published.second)):
+                raise ValidationError(
+                    f"sources.csv:{row_number}: date_only timestamp must be midnight UTC"
+                )
+        if row["publication_precision"] == "exact":
+            if row["timestamp_basis"] != "wire_metadata":
+                raise ValidationError(
+                    f"sources.csv:{row_number}: exact time requires wire metadata"
+                )
+        if not row["document_sha256"] and row["access_status"] != "verified_live":
+            raise ValidationError(
+                f"sources.csv:{row_number}: unhashed source must be verified live"
+            )
+
+    for row_number, row in enumerate(tables["events.csv"], start=2):
         published = _parse_time(row["published_at"], f"events.csv:{row_number}")
         available = _parse_time(row["available_at"], f"events.csv:{row_number}")
         tradable = _parse_time(row["tradable_from"], f"events.csv:{row_number}")
@@ -123,35 +148,85 @@ def _check_temporal(events: list[dict[str, str]]) -> None:
             raise ValidationError(
                 f"events.csv:{row_number}: expected published <= available <= tradable"
             )
+        source = sources[row["source_id"]]
+        if row["published_at"] != source["published_at"]:
+            raise ValidationError(
+                f"events.csv:{row_number}: published_at differs from source"
+            )
+        security = securities[row["security_id"]]
+        event_day = tradable.date()
+        if event_day < _parse_date(security["valid_from"], "security valid_from"):
+            raise ValidationError(f"events.csv:{row_number}: security not yet valid")
+        if security["valid_to"] and event_day > _parse_date(
+            security["valid_to"], "security valid_to"
+        ):
+            raise ValidationError(f"events.csv:{row_number}: security no longer valid")
 
-
-def _check_observations(rows: list[dict[str, str]]) -> None:
-    for row_number, row in enumerate(rows, start=2):
-        has_numeric = bool(row["numeric_value"])
-        has_text = bool(row["text_value"])
-        if has_numeric == has_text:
+    for row_number, row in enumerate(tables["observations.csv"], start=2):
+        if bool(row["numeric_value"]) == bool(row["text_value"]):
             raise ValidationError(
                 f"observations.csv:{row_number}: populate exactly one value field"
             )
-        if has_numeric:
-            try:
-                float(row["numeric_value"])
-            except ValueError as exc:
+        if _parse_date(row["period_start"], "period_start") > _parse_date(
+            row["period_end"], "period_end"
+        ):
+            raise ValidationError(
+                f"observations.csv:{row_number}: period_start exceeds period_end"
+            )
+        event = events[row["event_id"]]
+        for field in ("source_id", "claim_label", "available_at"):
+            if row[field] != event[field]:
                 raise ValidationError(
-                    f"observations.csv:{row_number}: numeric_value is not numeric"
-                ) from exc
+                    f"observations.csv:{row_number}: {field} differs from event"
+                )
 
+    for row_number, row in enumerate(tables["relationships.csv"], start=2):
+        if row["valid_to"] and _parse_date(
+            row["valid_from"], "valid_from"
+        ) > _parse_date(row["valid_to"], "valid_to"):
+            raise ValidationError(
+                f"relationships.csv:{row_number}: invalid effective interval"
+            )
+        if (
+            row["economic_exposure_known"] == "false"
+            and row["weight_basis"] != "registered_uniform_topological"
+        ):
+            raise ValidationError(
+                f"relationships.csv:{row_number}: non-economic weight is mislabeled"
+            )
+
+
+def _foreign_keys(
+    tables: dict[str, list[dict[str, str]]],
+    contract: dict[str, dict[str, Any]],
+) -> None:
+    resource_paths = {
+        resource["name"]: path for path, resource in contract.items()
+    }
+    for table, resource in contract.items():
+        for link in resource["schema"].get("foreignKeys", []):
+            reference = link["reference"]
+            _require_fk(
+                tables,
+                table,
+                link["fields"],
+                resource_paths[reference["resource"]],
+                reference["fields"],
+            )
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _check_manifest(root: Path, tables: dict[str, list[dict[str, str]]]) -> None:
-    manifest = json.loads((root / "release_manifest.json").read_text(encoding="utf-8"))
-    for item in manifest["files"]:
+def _manifest(root: Path, tables: dict[str, list[dict[str, str]]]) -> None:
+    payload = json.loads((root / "release_manifest.json").read_text(encoding="utf-8"))
+    listed = {item["path"] for item in payload["files"]}
+    if listed != set(tables):
+        raise ValidationError("manifest: file inventory differs from contract")
+    if payload.get("eligible_for_inference") is not False:
+        raise ValidationError("manifest: audit sample must be non-inferential")
+    for item in payload["files"]:
         name = item["path"]
-        if name not in tables:
-            raise ValidationError(f"manifest: unknown table {name}")
         if item["rows"] != len(tables[name]):
             raise ValidationError(f"manifest: row count mismatch for {name}")
         if item["sha256"] != _sha256(root / name):
@@ -159,36 +234,15 @@ def _check_manifest(root: Path, tables: dict[str, list[dict[str, str]]]) -> None
 
 
 def validate_directory(root: Path, check_manifest: bool = False) -> dict[str, int]:
-    tables = {name: _read(root / name) for name in REQUIRED}
-    for name, rows in tables.items():
-        _require_columns(name, rows)
-        _unique(name, rows)
-        _check_enums(name, rows)
-
-    entity_ids = {row["entity_id"] for row in tables["entities.csv"]}
-    security_ids = {row["security_id"] for row in tables["security_mappings.csv"]}
-    source_ids = {row["source_id"] for row in tables["sources.csv"]}
-    policy_ids = {
-        row["timestamp_policy_id"] for row in tables["timestamp_policies.csv"]
+    contract = _contract(root)
+    tables = {
+        name: _validate_resource(name, resource, root)
+        for name, resource in contract.items()
     }
-    event_ids = {row["event_id"] for row in tables["events.csv"]}
-
-    _require_fk(tables["security_mappings.csv"], "entity_id", entity_ids, "security_mappings.csv")
-    for field in ("subject_entity_id", "impact_entity_id"):
-        _require_fk(tables["events.csv"], field, entity_ids, "events.csv")
-    _require_fk(tables["events.csv"], "security_id", security_ids, "events.csv")
-    _require_fk(tables["events.csv"], "source_id", source_ids, "events.csv")
-    _require_fk(tables["events.csv"], "timestamp_policy_id", policy_ids, "events.csv")
-    _require_fk(tables["observations.csv"], "event_id", event_ids, "observations.csv")
-    _require_fk(tables["observations.csv"], "source_id", source_ids, "observations.csv")
-    for field in ("from_entity_id", "to_entity_id"):
-        _require_fk(tables["relationships.csv"], field, entity_ids, "relationships.csv")
-    _require_fk(tables["relationships.csv"], "source_id", source_ids, "relationships.csv")
-
-    _check_temporal(tables["events.csv"])
-    _check_observations(tables["observations.csv"])
+    _foreign_keys(tables, contract)
+    _temporal_and_semantic_checks(tables)
     if check_manifest:
-        _check_manifest(root, tables)
+        _manifest(root, tables)
     return {name: len(rows) for name, rows in tables.items()}
 
 

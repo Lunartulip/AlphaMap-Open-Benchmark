@@ -8,37 +8,37 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-TABLES = [
-    "entities.csv",
-    "security_mappings.csv",
-    "sources.csv",
-    "timestamp_policies.csv",
-    "events.csv",
-    "observations.csv",
-    "relationships.csv",
-]
-
-
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build an AlphaMap release manifest")
+    parser = argparse.ArgumentParser(description="Build an AlphaMap candidate manifest")
     parser.add_argument("directory", type=Path)
     parser.add_argument("--version", required=True)
     parser.add_argument("--schema-version", default="1.0.0")
+    parser.add_argument("--protocol-id", default="SCEM-4W-v2")
     args = parser.parse_args()
 
+    contract_path = args.directory.parents[2] / "contracts" / "v1" / "datapackage.json"
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
     files = []
-    for name in TABLES:
+    for resource in contract["resources"]:
+        name = resource["path"]
         path = args.directory / name
         with path.open(newline="", encoding="utf-8") as handle:
             rows = sum(1 for _ in csv.DictReader(handle))
         files.append(
-            {"path": name, "rows": rows, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            {
+                "path": name,
+                "rows": rows,
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
         )
     manifest = {
         "dataset": "alphamap-open-benchmark",
         "version": args.version,
         "schema_version": args.schema_version,
-        "released_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "release_status": "candidate",
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "eligible_for_inference": False,
+        "protocol_id": args.protocol_id,
         "files": files,
     }
     (args.directory / "release_manifest.json").write_text(

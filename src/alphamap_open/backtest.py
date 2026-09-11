@@ -4,64 +4,99 @@ import numpy as np
 import pandas as pd
 
 
-def prepare_forward_returns(
+def align_forward_returns(
+    features: pd.DataFrame,
     prices: pd.DataFrame,
     horizon: int = 20,
 ) -> pd.DataFrame:
-    """Create forward adjusted and relative returns without calendar look-ahead."""
+    """Execute at the first observed close strictly after each formation timestamp."""
     required = {"date", "security_id", "adjusted_close"}
     missing = required - set(prices.columns)
     if missing:
         raise ValueError(f"prices missing columns: {sorted(missing)}")
 
-    frame = prices.copy()
-    frame["date"] = pd.to_datetime(frame["date"], utc=True).dt.normalize()
-    frame = frame.sort_values(["security_id", "date"])
-    forward_price = frame.groupby("security_id")["adjusted_close"].shift(-horizon)
-    frame["forward_return"] = forward_price / frame["adjusted_close"] - 1.0
+    market = prices.copy()
+    market["price_at"] = pd.to_datetime(market["date"], utc=True).dt.normalize()
+    market = market.sort_values(["security_id", "price_at"])
+    market["forward_return"] = (
+        market.groupby("security_id")["adjusted_close"].shift(-horizon)
+        / market["adjusted_close"]
+        - 1.0
+    )
 
-    universe_benchmark = frame.groupby("date")["forward_return"].transform("mean")
-    if "sector" in frame.columns:
-        group = frame.groupby(["date", "sector"])["forward_return"]
-        sector_benchmark = group.transform("mean")
-        sector_size = group.transform("count")
-        frame["benchmark_source"] = np.where(
-            sector_size >= 3, "sector", "universe_fallback"
+    aligned: list[pd.DataFrame] = []
+    for security_id, left in features.groupby("security_id"):
+        right = market[market["security_id"] == security_id][
+            ["price_at", "adjusted_close", "forward_return"]
+        ].sort_values("price_at")
+        joined = pd.merge_asof(
+            left.sort_values("formation_at"),
+            right,
+            left_on="formation_at",
+            right_on="price_at",
+            direction="forward",
+            allow_exact_matches=False,
         )
-        benchmark = sector_benchmark.where(sector_size >= 3, universe_benchmark)
-    else:
-        frame["benchmark_source"] = "universe"
-        benchmark = universe_benchmark
-    frame["forward_relative_return"] = frame["forward_return"] - benchmark
-    return frame
+        joined["execution_price_field"] = "next_session_adjusted_close"
+        aligned.append(joined)
+
+    result = pd.concat(aligned, ignore_index=True)
+    group = result.groupby("formation_at")["forward_return"]
+    total = group.transform("sum")
+    count = group.transform("count")
+    result["benchmark_return"] = (total - result["forward_return"]) / (count - 1)
+    result.loc[count < 2, "benchmark_return"] = np.nan
+    result["forward_relative_return"] = (
+        result["forward_return"] - result["benchmark_return"]
+    )
+    return result.sort_values(["formation_at", "security_id"]).reset_index(drop=True)
 
 
 def evaluate_rank_ic(
-    features: pd.DataFrame,
-    returns: pd.DataFrame,
+    aligned: pd.DataFrame,
     minimum_cross_section: int = 5,
 ) -> tuple[pd.DataFrame, dict[str, float | int]]:
-    merged = features.merge(
-        returns[["date", "security_id", "forward_relative_return"]],
-        on=["date", "security_id"],
-        how="inner",
-        validate="one_to_one",
-    ).dropna(subset=["feature", "forward_relative_return"])
+    usable = aligned.dropna(subset=["feature", "forward_relative_return"])
 
-    def calculate(group: pd.DataFrame) -> float:
+    records: list[dict[str, object]] = []
+    for formation_at, group in usable.groupby("formation_at"):
         if len(group) < minimum_cross_section:
-            return float("nan")
-        return float(
-            group["feature"].rank().corr(group["forward_relative_return"].rank())
+            continue
+        rank_ic = group["feature"].rank().corr(
+            group["forward_relative_return"].rank()
         )
-
-    series = merged.groupby("date").apply(calculate, include_groups=False).dropna()
-    by_date = series.rename("rank_ic").reset_index()
+        records.append(
+            {"formation_at": formation_at, "rank_ic": float(rank_ic), "n": len(group)}
+        )
+    by_date = pd.DataFrame(records)
     summary: dict[str, float | int] = {
         "dates": int(len(by_date)),
-        "mean_rank_ic": float(by_date["rank_ic"].mean()) if len(by_date) else float("nan"),
+        "mean_rank_ic": (
+            float(by_date["rank_ic"].mean()) if len(by_date) else float("nan")
+        ),
         "median_rank_ic": (
             float(by_date["rank_ic"].median()) if len(by_date) else float("nan")
         ),
     }
     return by_date, summary
+
+
+def moving_block_interval(
+    values: pd.Series,
+    block_length: int = 5,
+    draws: int = 10_000,
+    seed: int = 0,
+) -> tuple[float, float]:
+    clean = values.dropna().to_numpy()
+    if len(clean) < block_length:
+        return float("nan"), float("nan")
+    starts = np.arange(len(clean) - block_length + 1)
+    blocks_per_draw = int(np.ceil(len(clean) / block_length))
+    rng = np.random.default_rng(seed)
+    means = np.empty(draws)
+    for draw in range(draws):
+        chosen = rng.choice(starts, size=blocks_per_draw, replace=True)
+        sample = np.concatenate([clean[start : start + block_length] for start in chosen])
+        means[draw] = sample[: len(clean)].mean()
+    low, high = np.quantile(means, [0.025, 0.975])
+    return float(low), float(high)

@@ -1,7 +1,7 @@
 # Brand and design standard
 
-AlphaMap presents evidence before interpretation. Public surfaces use concise declarative language, explicit units and visible lineage. Product capability stays distinct from planned coverage; hypotheses stay distinct from measured results.
+AlphaMap presents evidence before interpretation. Public surfaces use declarative language, explicit units and visible lineage. Capability, planned coverage, registered hypotheses and measured results are four distinct states.
 
-Use a dark-neutral foundation, accessible contrast, one primary blue for navigation and one green for validated states. Risk, uncertainty and ineligible records require text labels in addition to color. Audit tables keep identifiers, timestamps, provenance and units visible or one interaction away.
+Use accessible dark-neutral foundations, one primary blue for navigation and green only for passed validation. Uncertainty and ineligibility require text labels in addition to color. Audit tables keep identifiers, timestamps, source basis and units visible or one interaction away.
 
-Every surface should answer four questions immediately: what is measured, when it became knowable, how it is reproduced and what would invalidate the conclusion.
+Every surface answers: what is measured; when it became knowable; how it is reproduced; what is excluded; and what would invalidate the conclusion.

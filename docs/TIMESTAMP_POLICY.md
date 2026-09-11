@@ -1,11 +1,9 @@
 # Timestamp policy
 
-Temporal integrity uses UTC and three fields:
+AlphaMap stores publication, availability, tradability, formation and execution as distinct clocks.
 
-- published_at: time displayed by the source, or date-only when no reliable time exists.
-- available_at: earliest conservative time normalized evidence could be observed.
-- tradable_from: first modeled regular-session execution time after availability.
+published_at is source metadata. available_at is the earliest conservative normalization time. tradable_from is the first possible market opportunity after availability. formation_at is the research decision timestamp. execution_at is the price observation actually used by the daily reference implementation.
 
-EXACT_PLUS_15M adds a 15-minute ingestion allowance to an exact timestamp. AFTER_CLOSE_NEXT_SESSION begins trading at the next US regular-session open. DATE_ONLY_NEXT_SESSION places availability after the dated session and also begins at the next open.
+Each source declares timestamp_basis. wire_metadata requires a source-displayed timestamp. reconstructed_conservative means the record was assembled later and receives date-close-plus-15-minutes availability followed by the next regular-session open. The 15 minutes are a registered allowance, not measured historical latency.
 
-Production must use an exchange calendar for holidays and daylight saving. The sample stores explicit timestamps; downstream code never reconstructs them from event_date. More precise evidence creates a new vintage rather than rewriting a released timestamp.
+The research runner uses the first observed price session strictly after Friday formation and therefore never executes at an earlier Friday close. Production releases must use exchange calendars and contemporaneous first-seen logs. A more precise timestamp creates a new vintage rather than rewriting history.

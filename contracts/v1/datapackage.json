@@ -1,0 +1,930 @@
+{
+  "profile": "tabular-data-package",
+  "name": "alphamap-open-benchmark-v1",
+  "title": "AlphaMap Open Benchmark",
+  "version": "1.0.0-preview.1",
+  "licenses": [
+    {
+      "name": "CC-BY-4.0",
+      "path": "https://creativecommons.org/licenses/by/4.0/"
+    }
+  ],
+  "resources": [
+    {
+      "name": "entities",
+      "path": "entities.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "legal_name",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "domicile",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "infrastructure_layer",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "entity_id",
+        "foreignKeys": []
+      }
+    },
+    {
+      "name": "security_mappings",
+      "path": "security_mappings.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "security_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "ticker",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "exchange",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "valid_from",
+            "type": "date",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "valid_to",
+            "type": "date",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "benchmark_group",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "security_id",
+        "foreignKeys": [
+          {
+            "fields": "entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "sources",
+      "path": "sources.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "source_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "publisher",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "url",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "published_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "publication_precision",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "exact",
+                "date_only"
+              ]
+            }
+          },
+          {
+            "name": "timestamp_basis",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "wire_metadata",
+                "reconstructed_conservative"
+              ]
+            }
+          },
+          {
+            "name": "timestamp_evidence",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "retrieval_latency_basis",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "retrieved_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "document_sha256",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "source_version",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "locator_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "access_status",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_locator",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "source_id",
+        "foreignKeys": []
+      }
+    },
+    {
+      "name": "timestamp_policies",
+      "path": "timestamp_policies.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "timestamp_policy_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "availability_rule",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "tradability_rule",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "timestamp_policy_id",
+        "foreignKeys": []
+      }
+    },
+    {
+      "name": "events",
+      "path": "events.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "event_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "vintage_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "supersedes_id",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "subject_entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "impact_entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "security_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "event_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "evidence_stage",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "negative",
+                "neutral",
+                "positive"
+              ]
+            }
+          },
+          {
+            "name": "claim_label",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "issuer_reported_actual",
+                "issuer_forward_statement",
+                "derived_value",
+                "estimate",
+                "relationship_assertion"
+              ]
+            }
+          },
+          {
+            "name": "published_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "available_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "tradable_from",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "timestamp_policy_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "alpha_feature_eligible",
+            "type": "boolean",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_locator",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "theme",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "product",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "summary",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "event_id",
+        "foreignKeys": [
+          {
+            "fields": "subject_entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          },
+          {
+            "fields": "impact_entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          },
+          {
+            "fields": "security_id",
+            "reference": {
+              "resource": "security_mappings",
+              "fields": "security_id"
+            }
+          },
+          {
+            "fields": "source_id",
+            "reference": {
+              "resource": "sources",
+              "fields": "source_id"
+            }
+          },
+          {
+            "fields": "timestamp_policy_id",
+            "reference": {
+              "resource": "timestamp_policies",
+              "fields": "timestamp_policy_id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "observations",
+      "path": "observations.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "observation_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "vintage_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "supersedes_id",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "event_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "metric_name",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "numeric_value",
+            "type": "number",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "text_value",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "unit",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "comparator",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "period_start",
+            "type": "date",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "period_end",
+            "type": "date",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "as_of_date",
+            "type": "date",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "claim_label",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "issuer_reported_actual",
+                "issuer_forward_statement",
+                "derived_value",
+                "estimate",
+                "relationship_assertion"
+              ]
+            }
+          },
+          {
+            "name": "available_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_locator",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "observation_id",
+        "foreignKeys": [
+          {
+            "fields": "event_id",
+            "reference": {
+              "resource": "events",
+              "fields": "event_id"
+            }
+          },
+          {
+            "fields": "source_id",
+            "reference": {
+              "resource": "sources",
+              "fields": "source_id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "relationships",
+      "path": "relationships.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "relationship_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "vintage_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "supersedes_id",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "from_entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "from_security_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "to_entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "to_security_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "relationship_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "product",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "valid_from",
+            "type": "date",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "valid_to",
+            "type": "date",
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "confidence_tier",
+            "type": "string",
+            "constraints": {
+              "required": true,
+              "enum": [
+                "confirmed",
+                "corroborated",
+                "indicated"
+              ]
+            }
+          },
+          {
+            "name": "alpha_feature_eligible",
+            "type": "boolean",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "propagation_weight",
+            "type": "number",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "weight_basis",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "economic_exposure_known",
+            "type": "boolean",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_locator",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          }
+        ],
+        "primaryKey": "relationship_id",
+        "foreignKeys": [
+          {
+            "fields": "from_entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          },
+          {
+            "fields": "to_entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          },
+          {
+            "fields": "from_security_id",
+            "reference": {
+              "resource": "security_mappings",
+              "fields": "security_id"
+            }
+          },
+          {
+            "fields": "to_security_id",
+            "reference": {
+              "resource": "security_mappings",
+              "fields": "security_id"
+            }
+          },
+          {
+            "fields": "source_id",
+            "reference": {
+              "resource": "sources",
+              "fields": "source_id"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "coverage",
+      "path": "coverage.csv",
+      "profile": "tabular-data-resource",
+      "format": "csv",
+      "mediatype": "text/csv",
+      "schema": {
+        "fields": [
+          {
+            "name": "frame_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "source_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "entity_id",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "document_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "selection_role",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "extraction_status",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "eligible_for_inference",
+            "type": "boolean",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "exclusion_reason",
+            "type": "string",
+            "constraints": {
+              "required": false
+            }
+          }
+        ],
+        "primaryKey": [
+          "frame_id",
+          "source_id"
+        ],
+        "foreignKeys": [
+          {
+            "fields": "source_id",
+            "reference": {
+              "resource": "sources",
+              "fields": "source_id"
+            }
+          },
+          {
+            "fields": "entity_id",
+            "reference": {
+              "resource": "entities",
+              "fields": "entity_id"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "custom": {
+    "temporal_invariants": [
+      "events.published_at <= events.available_at <= events.tradable_from",
+      "observations.period_start <= observations.period_end",
+      "valid_from <= valid_to when valid_to is populated"
+    ],
+    "observation_invariant": "exactly one of numeric_value or text_value is populated",
+    "revision_policy": "append-only after release"
+  }
+}

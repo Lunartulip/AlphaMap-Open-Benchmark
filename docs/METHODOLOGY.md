@@ -1,19 +1,21 @@
 # Methodology
 
-## Hypothesis
+## Research object
 
-Changes in reviewable supply-chain evidence may reveal demand, capacity utilization or bottlenecks before effects are fully reflected across the AI-infrastructure value chain.
+The primary object is propagated evidence momentum rather than issuer disclosure level. An eligible supplier event receives a direct score at the supplier and a separately labeled one-hop score at the customer when a confirmed relationship is active. The relationship coefficient is fixed at 0.25 for the primary specification and is explicitly non-economic.
 
-## Canonicalization
+At each Friday 23:59:59 UTC formation, the engine computes a 28-day decayed propagated evidence stock. Momentum is the current stock minus its four-week lag. Every member of the frozen point-in-time universe is present; securities without eligible evidence receive zero before cross-sectional ranking.
 
-Documents are decomposed into atomic events and observations. Every record is labeled reported_fact, issuer_claim, derived_value, estimate or relationship_assertion. Summaries paraphrase evidence and preserve uncertainty.
+## Claim typing
 
-## Feature
+issuer_reported_actual means the issuer reported a realized historical metric; it is not independent verification. issuer_forward_statement identifies guidance or qualitative outlook. derived_value, estimate and relationship_assertion remain separate.
 
-At each Friday UTC anchor, only events already tradable are eligible. Direction maps to -1, 0 or +1. Claim-label weights are fixed in code. Evidence decays with a 28-day half-life. Scores become centered cross-sectional percentile ranks. The open implementation uses direct impact only.
+## Execution and outcome
 
-## Outcome and test
+The daily reference implementation executes at the first adjusted close strictly after formation. The outcome is the subsequent 20-session adjusted-close return minus the equal-weight return of all other available universe members. This leave-one-out benchmark avoids mechanical self-inclusion.
 
-The primary outcome is the 20-session forward adjusted-close return minus the contemporaneous sector return. If a sector contains fewer than three covered securities, the universe mean is used and marked. The primary statistic is weekly Spearman rank IC with at least five securities per date and date-block bootstrap inference.
+## Inference
 
-Baselines are same-timestamp disclosure count, trailing 20-session price momentum and unweighted signed evidence. Sensitivities cover 10, 25 and 50 bps costs, delayed availability, alternate half-lives and leave-one-group-out tests. No headline alpha claim is permitted before the prospective holdout finishes.
+The primary statistic is weekly Spearman rank IC. Five-week moving-date blocks address overlapping four-week outcomes. Portfolio cost sensitivity is a separate dollar-neutral tercile test with defined execution price, weight changes and one-way costs.
+
+The open audit sample is excluded from statistical claims. It exists to test schema, source reconstruction, temporal alignment and feature mechanics.

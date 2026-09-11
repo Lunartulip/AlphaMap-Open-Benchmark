@@ -10,13 +10,17 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
           cache: pip
       - run: python -m pip install -e ".[dev]"
       - run: alphamap-validate data/sample/v1 --manifest
       - run: pytest -q
-      - run: ruff check src tests research
+      - if: always()
+        run: ruff check src tests research
