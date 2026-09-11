@@ -3,7 +3,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-
 DIRECTION_WEIGHT = {"negative": -1.0, "neutral": 0.0, "positive": 1.0}
 EVIDENCE_WEIGHT = {
     "issuer_reported_actual": 1.0,
@@ -60,12 +59,11 @@ def _expanded_impulses(
     relations["tradable_from"] = pd.to_datetime(relations["tradable_from"], utc=True)
     propagated_rows: list[dict[str, object]] = []
     for event in eligible.to_dict("records"):
+        event_product = str(event["product"])
         candidates = relations[
             relations["from_entity_id"].eq(event["subject_entity_id"])
             & relations["applicable_event_type"].eq(event["event_type"])
-            & relations["applicable_product_prefix"].map(
-                lambda prefix: str(event["product"]).startswith(prefix)
-            )
+            & relations["applicable_product_prefix"].map(event_product.startswith)
         ].copy()
         event_day = event["tradable_from"].date()
         candidates = candidates[

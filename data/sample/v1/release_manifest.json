@@ -3,7 +3,7 @@
   "version": "1.0.0-preview.1",
   "schema_version": "1.0.0",
   "release_status": "candidate",
-  "generated_at": "2026-09-11T05:00:50.497Z",
+  "generated_at": "2026-09-11T05:18:21.074Z",
   "knowledge_cutoff": "2025-03-18T20:15:00Z",
   "eligible_for_inference": false,
   "protocol_id": "SCEM-4W-v2",
@@ -26,7 +26,7 @@
     {
       "path": "sources.csv",
       "rows": 11,
-      "sha256": "3bcc941f7d43765370196bc40b3175f24d52f0a3158d8f33bc11e00b0407c3f6"
+      "sha256": "4ab5e2ff394e2bf9ec55d7ec44d96b3cc29ecfb600ec30d459a6a65e604d10d4"
     },
     {
       "path": "events.csv",
@@ -41,7 +41,7 @@
     {
       "path": "relationships.csv",
       "rows": 2,
-      "sha256": "84545401a4f0a3d4e2cb36967449f2df8f4f1e5fffea11fa83db27443962e0d0"
+      "sha256": "fc12d9250bfa60641d8ff095f3594f6cfbcf02160171bb7f2175dfd97ce20cfa"
     },
     {
       "path": "coverage.csv",

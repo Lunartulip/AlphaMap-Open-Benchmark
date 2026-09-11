@@ -5,7 +5,6 @@ import pytest
 
 from alphamap_open.validate import ValidationError, validate_directory
 
-
 SAMPLE = Path("data/sample/v1")
 
 
