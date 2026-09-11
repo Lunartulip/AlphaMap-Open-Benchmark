@@ -100,6 +100,8 @@ def _expanded_impulses(
                     "relationship_id": relation["relationship_id"],
                 }
             )
+    if not propagated_rows:
+        return direct.reset_index(drop=True)
     propagated = pd.DataFrame(propagated_rows, columns=direct.columns)
     return pd.concat([direct, propagated], ignore_index=True)
 
@@ -120,12 +122,15 @@ def build_weekly_features(
 
     first = _utc(start if start is not None else impulses["impulse_at"].min())
     last = _utc(end if end is not None else impulses["impulse_at"].max())
-    anchors = pd.date_range(
+    anchor_days = pd.date_range(
         first.normalize(),
         last.normalize(),
         freq="W-FRI",
         tz="UTC",
-    ) + pd.Timedelta(hours=23, minutes=59, seconds=59)
+    )
+    anchors = anchor_days.map(
+        lambda timestamp: timestamp.replace(hour=23, minute=59, second=59)
+    )
 
     rows: list[dict[str, object]] = []
     for formation_at in anchors:
