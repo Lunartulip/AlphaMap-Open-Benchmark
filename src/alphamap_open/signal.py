@@ -69,8 +69,10 @@ def _expanded_impulses(
         candidates = candidates[
             pd.to_datetime(candidates["valid_from"]).dt.date.le(event_day)
         ]
-        valid_to = pd.to_datetime(candidates["valid_to"], errors="coerce").dt.date
-        candidates = candidates[valid_to.isna() | valid_to.ge(event_day)]
+        valid_to = candidates["valid_to"].fillna("").astype(str)
+        candidates = candidates[
+            valid_to.eq("") | valid_to.ge(event_day.isoformat())
+        ]
         if candidates.empty:
             continue
 
