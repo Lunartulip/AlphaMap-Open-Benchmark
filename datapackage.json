@@ -12,7 +12,7 @@
   "resources": [
     {
       "name": "entities",
-      "path": "entities.csv",
+      "path": "data/sample/v1/entities.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -53,7 +53,7 @@
     },
     {
       "name": "security_mappings",
-      "path": "security_mappings.csv",
+      "path": "data/sample/v1/security_mappings.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -130,7 +130,7 @@
     },
     {
       "name": "sources",
-      "path": "sources.csv",
+      "path": "data/sample/v1/sources.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -208,6 +208,13 @@
             }
           },
           {
+            "name": "timestamp_evidence_url",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
             "name": "retrieval_latency_basis",
             "type": "string",
             "constraints": {
@@ -263,7 +270,7 @@
     },
     {
       "name": "timestamp_policies",
-      "path": "timestamp_policies.csv",
+      "path": "data/sample/v1/timestamp_policies.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -304,7 +311,7 @@
     },
     {
       "name": "events",
-      "path": "events.csv",
+      "path": "data/sample/v1/events.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -505,7 +512,7 @@
     },
     {
       "name": "observations",
-      "path": "observations.csv",
+      "path": "data/sample/v1/observations.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -652,7 +659,7 @@
     },
     {
       "name": "relationships",
-      "path": "relationships.csv",
+      "path": "data/sample/v1/relationships.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -733,6 +740,48 @@
             "type": "date",
             "constraints": {
               "required": false
+            }
+          },
+          {
+            "name": "published_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "available_at",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "tradable_from",
+            "type": "datetime",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "applicable_event_type",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "applicable_product_prefix",
+            "type": "string",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "parallel_edge_policy",
+            "type": "string",
+            "constraints": {
+              "required": true
             }
           },
           {
@@ -832,7 +881,7 @@
     },
     {
       "name": "coverage",
-      "path": "coverage.csv",
+      "path": "data/sample/v1/coverage.csv",
       "profile": "tabular-data-resource",
       "format": "csv",
       "mediatype": "text/csv",
@@ -925,6 +974,12 @@
       "valid_from <= valid_to when valid_to is populated"
     ],
     "observation_invariant": "exactly one of numeric_value or text_value is populated",
-    "revision_policy": "append-only after release"
+    "revision_policy": "append-only after release",
+    "relationship_invariants": [
+      "published_at <= available_at <= tradable_from",
+      "propagation begins no earlier than max(event.tradable_from relation.tradable_from)",
+      "one latest tradable matching edge per event and directed security pair"
+    ],
+    "contract_version": "1.0.0"
   }
 }

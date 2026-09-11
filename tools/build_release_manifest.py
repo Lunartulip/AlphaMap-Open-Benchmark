@@ -16,11 +16,11 @@ def main() -> None:
     parser.add_argument("--protocol-id", default="SCEM-4W-v2")
     args = parser.parse_args()
 
-    contract_path = args.directory.parents[2] / "contracts" / "v1" / "datapackage.json"
+    contract_path = args.directory.parents[2] / "datapackage.json"
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     files = []
     for resource in contract["resources"]:
-        name = resource["path"]
+        name = Path(resource["path"]).name
         path = args.directory / name
         with path.open(newline="", encoding="utf-8") as handle:
             rows = sum(1 for _ in csv.DictReader(handle))
@@ -31,6 +31,9 @@ def main() -> None:
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             }
         )
+    with (args.directory / "events.csv").open(newline="", encoding="utf-8") as handle:
+        knowledge_cutoff = max(row["available_at"] for row in csv.DictReader(handle))
+
     manifest = {
         "dataset": "alphamap-open-benchmark",
         "version": args.version,
@@ -39,6 +42,7 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "eligible_for_inference": False,
         "protocol_id": args.protocol_id,
+        "knowledge_cutoff": knowledge_cutoff,
         "files": files,
     }
     (args.directory / "release_manifest.json").write_text(

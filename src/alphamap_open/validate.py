@@ -22,7 +22,7 @@ def _parse_date(value: str, context: str) -> date:
 
 def _parse_time(value: str, context: str) -> datetime:
     try:
-        result = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        result = datetime.fromisoformat(value)
     except ValueError as exc:
         raise ValidationError(f"{context}: invalid ISO datetime {value!r}") from exc
     if result.tzinfo is None:
@@ -42,11 +42,14 @@ def _read(path: Path) -> tuple[list[str], list[dict[str, str]]]:
 
 
 def _contract(root: Path) -> dict[str, dict[str, Any]]:
-    path = root.parents[2] / "contracts" / "v1" / "datapackage.json"
+    path = root.parents[2] / "datapackage.json"
     package = json.loads(path.read_text(encoding="utf-8"))
     if package.get("profile") != "tabular-data-package":
         raise ValidationError("contract: expected tabular-data-package profile")
-    return {resource["path"]: resource for resource in package["resources"]}
+    return {
+        Path(resource["path"]).name: resource
+        for resource in package["resources"]
+    }
 
 
 def _validate_field(value: str, field: dict[str, Any], context: str) -> None:
@@ -64,7 +67,7 @@ def _validate_field(value: str, field: dict[str, Any], context: str) -> None:
         elif kind == "date":
             date.fromisoformat(value)
         elif kind == "datetime":
-            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            parsed = datetime.fromisoformat(value)
             if parsed.tzinfo is None:
                 raise ValueError
     except ValueError as exc:
@@ -125,16 +128,20 @@ def _temporal_and_semantic_checks(
 
     for row_number, row in enumerate(tables["sources.csv"], start=2):
         published = _parse_time(row["published_at"], f"sources.csv:{row_number}")
-        if row["publication_precision"] == "date_only":
-            if any((published.hour, published.minute, published.second)):
-                raise ValidationError(
-                    f"sources.csv:{row_number}: date_only timestamp must be midnight UTC"
-                )
-        if row["publication_precision"] == "exact":
-            if row["timestamp_basis"] != "wire_metadata":
-                raise ValidationError(
-                    f"sources.csv:{row_number}: exact time requires wire metadata"
-                )
+        if (
+            row["publication_precision"] == "date_only"
+            and any((published.hour, published.minute, published.second))
+        ):
+            raise ValidationError(
+                f"sources.csv:{row_number}: date_only timestamp must be midnight UTC"
+            )
+        if (
+            row["publication_precision"] == "exact"
+            and row["timestamp_basis"] != "wire_metadata"
+        ):
+            raise ValidationError(
+                f"sources.csv:{row_number}: exact time requires wire metadata"
+            )
         if not row["document_sha256"] and row["access_status"] != "verified_live":
             raise ValidationError(
                 f"sources.csv:{row_number}: unhashed source must be verified live"
@@ -152,6 +159,22 @@ def _temporal_and_semantic_checks(
         if row["published_at"] != source["published_at"]:
             raise ValidationError(
                 f"events.csv:{row_number}: published_at differs from source"
+            )
+        expected_policy = (
+            "DATE_ONLY_NEXT_SESSION"
+            if source["publication_precision"] == "date_only"
+            else "EXACT_PLUS_15M"
+        )
+        if row["timestamp_policy_id"] != expected_policy:
+            raise ValidationError(
+                f"events.csv:{row_number}: timestamp policy differs from source basis"
+            )
+        if (
+            source["publication_precision"] == "date_only"
+            and source["timestamp_basis"] != "reconstructed_conservative"
+        ):
+            raise ValidationError(
+                f"events.csv:{row_number}: date-only source basis is inconsistent"
             )
         security = securities[row["security_id"]]
         event_day = tradable.date()
@@ -181,6 +204,24 @@ def _temporal_and_semantic_checks(
                 )
 
     for row_number, row in enumerate(tables["relationships.csv"], start=2):
+        published = _parse_time(
+            row["published_at"], f"relationships.csv:{row_number}"
+        )
+        available = _parse_time(
+            row["available_at"], f"relationships.csv:{row_number}"
+        )
+        tradable = _parse_time(
+            row["tradable_from"], f"relationships.csv:{row_number}"
+        )
+        if not published <= available <= tradable:
+            raise ValidationError(
+                f"relationships.csv:{row_number}: invalid knowledge-time order"
+            )
+        source = sources[row["source_id"]]
+        if row["published_at"] != source["published_at"]:
+            raise ValidationError(
+                f"relationships.csv:{row_number}: published_at differs from source"
+            )
         if row["valid_to"] and _parse_date(
             row["valid_from"], "valid_from"
         ) > _parse_date(row["valid_to"], "valid_to"):
@@ -220,11 +261,27 @@ def _sha256(path: Path) -> str:
 
 def _manifest(root: Path, tables: dict[str, list[dict[str, str]]]) -> None:
     payload = json.loads((root / "release_manifest.json").read_text(encoding="utf-8"))
+    repository_root = root.parents[2]
+    package = json.loads(
+        (repository_root / "datapackage.json").read_text(encoding="utf-8")
+    )
+    protocol = json.loads(
+        (repository_root / "research" / "protocol.json").read_text(encoding="utf-8")
+    )
     listed = {item["path"] for item in payload["files"]}
     if listed != set(tables):
         raise ValidationError("manifest: file inventory differs from contract")
     if payload.get("eligible_for_inference") is not False:
         raise ValidationError("manifest: audit sample must be non-inferential")
+    if payload["version"] != package["version"]:
+        raise ValidationError("manifest: package version mismatch")
+    if payload["schema_version"] != package["custom"]["contract_version"]:
+        raise ValidationError("manifest: contract version mismatch")
+    if payload["protocol_id"] != protocol["protocol_id"]:
+        raise ValidationError("manifest: protocol mismatch")
+    cutoff = max(row["available_at"] for row in tables["events.csv"])
+    if payload["knowledge_cutoff"] != cutoff:
+        raise ValidationError("manifest: knowledge cutoff mismatch")
     for item in payload["files"]:
         name = item["path"]
         if item["rows"] != len(tables[name]):

@@ -36,7 +36,7 @@ def main() -> None:
     price_dates = pd.to_datetime(prices["date"], utc=True)
     features = build_weekly_features(
         events,
-        universe=securities["security_id"].tolist(),
+        securities=securities,
         relationships=relationships,
         start=price_dates.min(),
         end=price_dates.max(),

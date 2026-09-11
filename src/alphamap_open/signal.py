@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-
 import numpy as np
 import pandas as pd
 
@@ -23,6 +21,17 @@ def _utc(value: object) -> pd.Timestamp:
     return timestamp.tz_convert("UTC")
 
 
+def _active_security_ids(
+    securities: pd.DataFrame,
+    formation_at: pd.Timestamp,
+) -> list[str]:
+    day = formation_at.tz_convert("UTC").date()
+    valid_from = pd.to_datetime(securities["valid_from"]).dt.date
+    valid_to = pd.to_datetime(securities["valid_to"], errors="coerce").dt.date
+    active = (valid_from <= day) & (valid_to.isna() | (valid_to >= day))
+    return securities.loc[active, "security_id"].drop_duplicates().tolist()
+
+
 def _expanded_impulses(
     events: pd.DataFrame,
     relationships: pd.DataFrame,
@@ -41,33 +50,49 @@ def _expanded_impulses(
     direct = eligible[
         ["event_id", "subject_entity_id", "security_id", "tradable_from", "base_weight"]
     ].copy()
+    direct = direct.rename(columns={"tradable_from": "impulse_at", "base_weight": "weight"})
     direct["component"] = "direct"
-    direct["weight"] = direct.pop("base_weight")
     direct["relationship_id"] = ""
 
-    propagated_rows: list[dict[str, object]] = []
-    active = relationships[
+    relations = relationships[
         relationships["alpha_feature_eligible"].astype(str).str.lower().eq("true")
     ].copy()
+    relations["tradable_from"] = pd.to_datetime(relations["tradable_from"], utc=True)
+    propagated_rows: list[dict[str, object]] = []
     for event in eligible.to_dict("records"):
+        candidates = relations[
+            relations["from_entity_id"].eq(event["subject_entity_id"])
+            & relations["applicable_event_type"].eq(event["event_type"])
+            & relations["applicable_product_prefix"].map(
+                lambda prefix: str(event["product"]).startswith(prefix)
+            )
+        ].copy()
         event_day = event["tradable_from"].date()
-        for relation in active.to_dict("records"):
-            valid_to = relation.get("valid_to")
-            if event["subject_entity_id"] != relation["from_entity_id"]:
-                continue
-            if event_day < pd.Timestamp(relation["valid_from"]).date():
-                continue
-            if pd.notna(valid_to) and str(valid_to) and event_day > pd.Timestamp(valid_to).date():
-                continue
+        candidates = candidates[
+            pd.to_datetime(candidates["valid_from"]).dt.date.le(event_day)
+        ]
+        valid_to = pd.to_datetime(candidates["valid_to"], errors="coerce").dt.date
+        candidates = candidates[valid_to.isna() | valid_to.ge(event_day)]
+        if candidates.empty:
+            continue
+
+        candidates = candidates.sort_values("tradable_from").drop_duplicates(
+            ["from_security_id", "to_security_id"],
+            keep="last",
+        )
+        for relation in candidates.to_dict("records"):
             propagated_rows.append(
                 {
                     "event_id": event["event_id"],
                     "subject_entity_id": event["subject_entity_id"],
                     "security_id": relation["to_security_id"],
-                    "tradable_from": event["tradable_from"],
-                    "component": "propagated",
+                    "impulse_at": max(
+                        event["tradable_from"],
+                        relation["tradable_from"],
+                    ),
                     "weight": event["base_weight"]
                     * float(relation["propagation_weight"]),
+                    "component": "propagated",
                     "relationship_id": relation["relationship_id"],
                 }
             )
@@ -77,37 +102,40 @@ def _expanded_impulses(
 
 def build_weekly_features(
     events: pd.DataFrame,
-    universe: Sequence[str],
+    securities: pd.DataFrame,
     relationships: pd.DataFrame,
     start: object | None = None,
     end: object | None = None,
     half_life_days: float = 28.0,
     momentum_lag_weeks: int = 4,
 ) -> pd.DataFrame:
-    """Build complete-universe Friday features from already-tradable evidence."""
+    """Build PIT-membership Friday features from already-tradable evidence."""
     impulses = _expanded_impulses(events, relationships)
     if impulses.empty:
         return pd.DataFrame()
 
-    first = _utc(start if start is not None else impulses["tradable_from"].min())
-    last = _utc(end if end is not None else impulses["tradable_from"].max())
+    first = _utc(start if start is not None else impulses["impulse_at"].min())
+    last = _utc(end if end is not None else impulses["impulse_at"].max())
     anchors = pd.date_range(
-        first.normalize(), last.normalize(), freq="W-FRI", tz="UTC"
+        first.normalize(),
+        last.normalize(),
+        freq="W-FRI",
+        tz="UTC",
     ) + pd.Timedelta(hours=23, minutes=59, seconds=59)
 
     rows: list[dict[str, object]] = []
     for formation_at in anchors:
-        visible = impulses[impulses["tradable_from"] <= formation_at].copy()
+        visible = impulses[impulses["impulse_at"] <= formation_at].copy()
         if visible.empty:
             visible["decayed"] = pd.Series(dtype=float)
         else:
             age_days = (
-                formation_at - visible["tradable_from"]
+                formation_at - visible["impulse_at"]
             ).dt.total_seconds() / 86400.0
-            visible["decayed"] = (
-                visible["weight"] * np.exp2(-age_days / half_life_days)
+            visible["decayed"] = visible["weight"] * np.exp2(
+                -age_days / half_life_days
             )
-        for security_id in universe:
+        for security_id in _active_security_ids(securities, formation_at):
             own = visible[visible["security_id"] == security_id]
             rows.append(
                 {

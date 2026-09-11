@@ -3,7 +3,7 @@
 Point-in-time AI-infrastructure evidence for reproducible public-equity research.
 
 [![CI](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml/badge.svg)](https://github.com/Lunartulip/ai-chip-industry-map/actions/workflows/ci.yml)
-[![Contract](https://img.shields.io/badge/data_package-v1-5B8CFF)](contracts/v1/datapackage.json)
+[![Contract](https://img.shields.io/badge/data_package-v1-5B8CFF)](datapackage.json)
 [![Protocol](https://img.shields.io/badge/protocol-draft_registered-12B886)](research/protocol.json)
 
 ## Registered question
@@ -25,37 +25,39 @@ AlphaMap separates that research program from the open audit sample. The reposit
 | Timestamp basis | Explicitly observed or conservatively reconstructed |
 | Inference eligibility | No; data engineering and source audit only |
 
-The sample is small enough to reconstruct record by record. coverage.csv identifies its selection role and prevents accidental use as an inferential backtest.
+The sample is small enough to reconstruct record by record. `coverage.csv` identifies its selection role and prevents accidental use as an inferential backtest.
 
 ## What is measured
 
 A source event produces a direct issuer evidence impulse. When an active confirmed supplier edge exists, the same event can produce a separately labeled one-hop propagated impulse for the customer security. The registered supply-chain momentum feature is the change in 28-day decayed propagated evidence stock over four weeks.
 
-The uniform propagation coefficient is a research parameter, not an estimate of revenue exposure. Direct and propagated components remain independently inspectable.
+The uniform propagation coefficient is a research parameter, not an estimate of revenue exposure. Direct and propagated components remain independently inspectable. Relationship knowledge time, event type, product applicability and parallel-edge deduplication are enforced before propagation.
 
 ## Temporal model
 
 Source publication -> conservative availability -> earliest tradable time -> Friday formation -> next observed session close -> 20-session forward return
 
-Historical records reconstructed after publication carry timestamp_basis=reconstructed_conservative. They demonstrate no-lookahead mechanics but are never represented as contemporaneously captured observations.
+Historical records reconstructed after publication carry `timestamp_basis=reconstructed_conservative`. They demonstrate no-lookahead mechanics but are never represented as contemporaneously captured observations.
 
 ## Quick start
 
     python -m pip install -e ".[dev]"
+    frictionless validate datapackage.json
     alphamap-validate data/sample/v1 --manifest
     pytest
     python research/run_research.py --prices examples/price_input_schema.csv
 
-Required price columns are date, security_id and adjusted_close. Evidence data never embeds or relicenses market prices.
+Required price columns are `date`, `security_id` and `adjusted_close`. Evidence data never embeds or relicenses market prices.
 
 ## Repository map
 
-- data/sample/v1: normalized audit sample and release manifest
-- contracts/v1/datapackage.json: Frictionless-compatible tabular contract
-- src/alphamap_open: contract validation, signal construction and evaluation
-- research: pre-registration state and reproducible runner
-- docs: methodology, sampling, timestamps, governance and field semantics
-- CHANGELOG.md: release history and link to the historical visualization commit
+- `data/sample/v1`: normalized audit sample and release manifest
+- `datapackage.json`: Frictionless tabular data package
+- `src/alphamap_open`: contract validation, signal construction and evaluation
+- `research`: pre-registration state and reproducible runner
+- `docs`: methodology, sampling, timestamps, governance and field semantics
+- [Release roadmap](docs/ROADMAP.md): first 48 hours through vendor-readiness gates
+- `CHANGELOG.md`: release history and link to the historical visualization commit
 
 ## Quality principles
 
@@ -67,4 +69,4 @@ Required price columns are date, security_id and adjusted_close. Evidence data n
 6. Baselines, costs, lags, concentration tests and falsifiers are fixed before results.
 7. A negative result is a valid registered outcome.
 
-Code is MIT licensed. AlphaMap-authored normalized data is CC BY 4.0 subject to DATA-LICENSE.md.
+Code is MIT licensed. AlphaMap-authored normalized data is CC BY 4.0 subject to `DATA-LICENSE.md`.

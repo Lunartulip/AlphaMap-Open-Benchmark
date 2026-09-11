@@ -6,9 +6,15 @@ The primary object is propagated evidence momentum rather than issuer disclosure
 
 At each Friday 23:59:59 UTC formation, the engine computes a 28-day decayed propagated evidence stock. Momentum is the current stock minus its four-week lag. Every member of the frozen point-in-time universe is present; securities without eligible evidence receive zero before cross-sectional ranking.
 
+## Relationship eligibility
+
+A propagated impulse is created only when both the event and the relationship were tradable knowledge by formation time. The relationship must match the event type and product prefix, and both records must be inside their validity intervals. If more than one disclosure supports the same supplier-customer path, the engine keeps the latest tradable matching edge instead of counting the path twice. The impulse time is the later of the event and relationship tradable timestamps.
+
+This rule prevents a relationship learned later from being projected backward, prevents unrelated supplier news from flowing across an edge, and keeps parallel evidence records auditable without amplifying the signal.
+
 ## Claim typing
 
-issuer_reported_actual means the issuer reported a realized historical metric; it is not independent verification. issuer_forward_statement identifies guidance or qualitative outlook. derived_value, estimate and relationship_assertion remain separate.
+`issuer_reported_actual` means the issuer reported a realized historical metric; it is not independent verification. `issuer_forward_statement` identifies guidance or qualitative outlook. `derived_value`, `estimate` and `relationship_assertion` remain separate.
 
 ## Execution and outcome
 

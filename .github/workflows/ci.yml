@@ -11,6 +11,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
@@ -20,6 +21,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - run: python -m pip install -e ".[dev]"
+      - run: frictionless validate datapackage.json
       - run: alphamap-validate data/sample/v1 --manifest
       - run: pytest -q
       - if: always()

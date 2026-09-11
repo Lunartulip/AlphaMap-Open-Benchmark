@@ -70,7 +70,7 @@ def evaluate_rank_ic(
         )
     by_date = pd.DataFrame(records)
     summary: dict[str, float | int] = {
-        "dates": int(len(by_date)),
+        "dates": len(by_date),
         "mean_rank_ic": (
             float(by_date["rank_ic"].mean()) if len(by_date) else float("nan")
         ),
