@@ -16,7 +16,9 @@
 </p>
 
 <p align="center">
-  <a href="https://lunartuliplab.com/alphamap"><strong>AlphaMap Research &amp; Institutional Data →</strong></a>
+  <a href="https://lunartuliplab.com/en/alphamap"><strong>Explore AlphaMap Research →</strong></a>
+  &nbsp;&nbsp;·&nbsp;&nbsp;
+  <a href="https://lunartuliplab.com/en/institutional-access"><strong>Institutional Access →</strong></a>
 </p>
 
 <a href="assets/visuals/alphamap-research-loop.svg">
@@ -27,15 +29,15 @@
 
 ## Open benchmark and broader AlphaMap
 
-This repository is AlphaMap's public benchmark surface: a versioned, auditable reference implementation that is complete for its declared sample and research scope. The broader project, ongoing research and institutional product direction are maintained at **[lunartuliplab.com/alphamap](https://lunartuliplab.com/alphamap)**.
+This repository is AlphaMap's public benchmark surface: a versioned, auditable reference implementation that is complete for its declared sample and research scope. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
 
-| Surface | Role |
-| --- | --- |
-| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol |
-| AlphaMap research | Ongoing research, product context and canonical public updates |
-| Institutional data/API | Intended procurement surface for expanded point-in-time coverage, scheduled delivery, correction history and service commitments |
+| Surface | Role | Current status |
+| --- | --- | --- |
+| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol | Public |
+| AlphaMap research | Ongoing research, product context and canonical public updates | Public |
+| Institutional data/API | Intended procurement surface for expanded point-in-time coverage and production delivery | Evaluation-stage; scope and terms are defined per engagement |
 
-The commercial distinction is breadth, recency and operational reliability—not a hidden or contradictory methodology. See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model.
+Public and institutional surfaces share the same semantic contract; licensed delivery is intended to add breadth, recency, longitudinal depth and operational support. Website research publications and this repository's normalized sample are separately governed; the sample license is defined in [DATA-LICENSE.md](DATA-LICENSE.md). See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model.
 
 ## Pre-specified research question
 

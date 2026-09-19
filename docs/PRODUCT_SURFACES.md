@@ -1,16 +1,16 @@
 # AlphaMap product surfaces
 
-AlphaMap is designed around one public data contract and multiple delivery surfaces. The open benchmark establishes the semantics and conformance baseline; the institutional product extends coverage, timeliness and delivery guarantees without changing the meaning of shared fields.
+AlphaMap is designed around one public data contract and multiple delivery surfaces. The open benchmark establishes the current semantics and conformance baseline. The target institutional surface is intended to extend coverage, timeliness and production delivery without changing the meaning of shared fields; coverage, cadence, rights and service terms are defined per engagement.
 
 ## Surface model
 
-| Surface | Primary purpose | Public commitment |
+| Surface | Primary purpose | Status / intended scope |
 | --- | --- | --- |
-| Open Benchmark | Reproducibility, schema review, source audit and client integration testing | Versioned audit data, executable validation, reference signal code and falsifiable research protocol |
-| AlphaMap Research | Canonical public research and product context | Ongoing research, methodology notes, public updates and institutional evaluation entry point |
-| Institutional Data/API | Production research and systematic ingestion | Expanded point-in-time coverage, scheduled releases, corrections, entitlements, delivery monitoring and support |
+| Open Benchmark | Reproducibility, schema review, source audit and client integration testing | Public: versioned audit data, executable validation, reference signal code and falsifiable research protocol |
+| AlphaMap Research | Canonical public research and product context | Public: ongoing research, methodology notes and public updates |
+| Institutional Data/API | Production research and systematic ingestion | Evaluation-stage: coverage, delivery cadence, rights and service terms are defined per engagement |
 
-The open benchmark is complete for its declared scope. The institutional product should differentiate on coverage breadth, observation latency, longitudinal depth, delivery reliability and service—not by withholding the definitions needed to reproduce the public reference workflow.
+The open benchmark is complete for its declared scope. Institutional differentiation is based on coverage breadth, observation latency, longitudinal depth and operational reliability. Definitions required to reproduce the public reference workflow remain public.
 
 ## Shared compatibility contract
 
@@ -37,6 +37,8 @@ A procurement-ready AlphaMap package should include:
 - **Coverage ledger:** issuer, market, document-type and date coverage with explicit gaps.
 - **Data dictionary:** types, units, nullability, enumerations, examples and change policy.
 - **Quality report:** latency, completeness, duplicate rate, revision rate and unresolved exceptions.
+- **Provenance and rights:** source-level provenance, permitted-use boundaries and a rights schedule for every delivered resource.
+- **Security and continuity:** target materials covering access controls, data handling, continuity and incident-response procedures.
 - **Operations:** authentication, entitlements, rate limits, status reporting, support and service objectives.
 
 A practical API surface can expose entities, securities, sources, events, observations, relationships, release manifests and change cursors. Bulk snapshots and incremental API delivery should resolve to the same release identifiers and content hashes.
@@ -53,7 +55,7 @@ The evaluation pack should be representative enough to test ingestion and resear
 
 ## Product and research claims
 
-AlphaMap should sell data quality, point-in-time integrity, coverage, delivery and research usability. Predictive performance remains a separately tested research outcome.
+AlphaMap is evaluated on data quality, point-in-time integrity, coverage, delivery and research usability. Predictive performance is treated as a separately tested research outcome.
 
 Public and commercial materials should therefore distinguish:
 
@@ -65,7 +67,10 @@ Public and commercial materials should therefore distinguish:
 
 ## Canonical links
 
-- AlphaMap research and institutional product: https://lunartuliplab.com/alphamap
+- AlphaMap research: https://lunartuliplab.com/en/alphamap
+- Institutional access: https://lunartuliplab.com/en/institutional-access
 - Open benchmark: https://github.com/Lunartulip/AlphaMap-Open-Benchmark
 - Public protocol: ../research/protocol.json
 - Data package: ../datapackage.json
+
+Public website articles are research publications, not licensed dataset deliveries. AlphaMap-authored normalized records in this repository are licensed separately under ../DATA-LICENSE.md.
