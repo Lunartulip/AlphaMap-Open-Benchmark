@@ -2,6 +2,8 @@
 
 AlphaMap is designed around one public data contract and multiple delivery surfaces. The open benchmark establishes the current semantics and conformance baseline. The target institutional surface is intended to extend coverage, timeliness and production delivery without changing the meaning of shared fields; coverage, cadence, rights and service terms are defined per engagement.
 
+The repository predates the broader AlphaMap research-note program and now provides its open compatibility layer. A research note may use a materially larger, study-specific panel without changing the declared scope of the benchmark sample.
+
 ## Surface model
 
 | Surface | Primary purpose | Status / intended scope |
@@ -10,7 +12,7 @@ AlphaMap is designed around one public data contract and multiple delivery surfa
 | AlphaMap Research | Canonical public research and product context | Public: ongoing research, methodology notes and public updates |
 | Institutional Data/API | Production research and systematic ingestion | Evaluation-stage: coverage, delivery cadence, rights and service terms are defined per engagement |
 
-The open benchmark is complete for its declared scope. Institutional differentiation is based on coverage breadth, observation latency, longitudinal depth and operational reliability. Definitions required to reproduce the public reference workflow remain public.
+The open benchmark is complete for its declared scope. Its released sample is not silently expanded when a later study uses more observations or issuers. Research Note artifacts receive independent identifiers, manifests and citations under the [research release model](RESEARCH_RELEASES.md). Institutional differentiation is based on coverage breadth, observation latency, longitudinal depth and operational reliability. Definitions required to reproduce the public reference workflow remain public.
 
 ## Shared compatibility contract
 
@@ -72,5 +74,6 @@ Public and commercial materials should therefore distinguish:
 - Open benchmark: https://github.com/Lunartulip/AlphaMap-Open-Benchmark
 - Public protocol: ../research/protocol.json
 - Data package: ../datapackage.json
+- Research release model: RESEARCH_RELEASES.md
 
 Public website articles are research publications, not licensed dataset deliveries. AlphaMap-authored normalized records in this repository are licensed separately under [DATA-LICENSE.md](../DATA-LICENSE.md).

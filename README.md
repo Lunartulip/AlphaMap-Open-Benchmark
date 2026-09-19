@@ -29,7 +29,7 @@
 
 ## Open benchmark and broader AlphaMap
 
-This repository is AlphaMap's public benchmark surface: a versioned, auditable reference implementation that is complete for its declared sample and research scope. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
+This repository began as a bounded public AI-chip evidence project and now serves as AlphaMap's open compatibility benchmark: a versioned, auditable reference implementation complete for its declared sample and research scope. Later AlphaMap Research Notes may use larger, study-specific frozen datasets; those releases are versioned and cited independently rather than silently extending `data/sample/v1`. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
 
 | Surface | Role | Current status |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ This repository is AlphaMap's public benchmark surface: a versioned, auditable r
 | AlphaMap research | Ongoing research, product context and canonical public updates | Public |
 | Institutional data/API | Intended procurement surface for expanded point-in-time coverage and production delivery | Evaluation-stage; scope and terms are defined per engagement |
 
-Public and institutional surfaces share the same semantic contract; licensed delivery is intended to add breadth, recency, longitudinal depth and operational support. Website research publications and this repository's normalized sample are separately governed; the sample license is defined in [DATA-LICENSE.md](DATA-LICENSE.md). See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model.
+Public and institutional surfaces share the same semantic contract; licensed delivery is intended to add breadth, recency, longitudinal depth and operational support. Website research publications and this repository's normalized sample are separately governed; the sample license is defined in [DATA-LICENSE.md](DATA-LICENSE.md). See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model, and the [research release model](docs/RESEARCH_RELEASES.md) for frozen study artifacts, DOI registration and paper links.
 
 ## Pre-specified research question
 
@@ -110,6 +110,7 @@ Required price columns are `date`, `security_id` and `adjusted_close`.
 - `research`: pre-registration state and reproducible runner
 - `docs`: methodology, sampling, timestamps, governance and field semantics
 - [Release roadmap](docs/ROADMAP.md): first 48 hours through vendor-readiness gates
+- [Research release model](docs/RESEARCH_RELEASES.md): frozen study snapshots, DOI/SSRN citation and correction rules
 - `CHANGELOG.md`: release history and link to the historical visualization commit
 
 ## Quality principles

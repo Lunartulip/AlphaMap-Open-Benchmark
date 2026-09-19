@@ -4,8 +4,8 @@ title: "AlphaMap Open Benchmark"
 type: dataset
 authors:
   - family-names: "LunarTulip"
-repository-code: "https://github.com/Lunartulip/ai-chip-industry-map"
-url: "https://github.com/Lunartulip/ai-chip-industry-map"
+repository-code: "https://github.com/Lunartulip/AlphaMap-Open-Benchmark"
+url: "https://github.com/Lunartulip/AlphaMap-Open-Benchmark"
 license: CC-BY-4.0
 version: "1.0.0-preview.1"
 date-released: "2026-09-11"
