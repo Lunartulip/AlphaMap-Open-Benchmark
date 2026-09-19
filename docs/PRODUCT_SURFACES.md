@@ -8,11 +8,11 @@ The repository predates the broader AlphaMap research-note program and now provi
 
 | Surface | Primary purpose | Status / intended scope |
 | --- | --- | --- |
-| Open Benchmark | Reproducibility, schema review, source audit and client integration testing | Public: versioned audit data, executable validation, reference signal code and falsifiable research protocol |
+| Open Benchmark | Reproducibility, schema review, source audit and client integration testing | Public preview: versioned audit data, executable validation, reference signal code and falsifiable research protocol |
 | AlphaMap Research | Canonical public research and product context | Public: ongoing research, methodology notes and public updates |
 | Institutional Data/API | Production research and systematic ingestion | Evaluation-stage: coverage, delivery cadence, rights and service terms are defined per engagement |
 
-The open benchmark is complete for its declared scope. Its released sample is not silently expanded when a later study uses more observations or issuers. Research Note artifacts receive independent identifiers, manifests and citations under the [research release model](RESEARCH_RELEASES.md). Institutional differentiation is based on coverage breadth, observation latency, longitudinal depth and operational reliability. Definitions required to reproduce the public reference workflow remain public.
+The current public preview is complete as a bounded audit sample and reference workflow for its declared scope; it is not an inferential dataset. Its released sample is not silently expanded when a later study uses more observations or issuers. Research Note artifacts receive independent identifiers, manifests and citations under the [research release model](RESEARCH_RELEASES.md). Institutional differentiation is based on coverage breadth, observation latency, longitudinal depth and operational reliability. Definitions required to reproduce the public reference workflow remain public.
 
 ## Shared compatibility contract
 

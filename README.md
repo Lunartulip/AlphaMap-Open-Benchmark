@@ -29,11 +29,11 @@
 
 ## Open benchmark and broader AlphaMap
 
-This repository began as a bounded public AI-chip evidence project and now serves as AlphaMap's open compatibility benchmark: a versioned, auditable reference implementation complete for its declared sample and research scope. Later AlphaMap Research Notes may use larger, study-specific frozen datasets; those releases are versioned and cited independently rather than silently extending `data/sample/v1`. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
+This repository began as a bounded public AI-chip evidence project and now serves as AlphaMap's open compatibility benchmark. The current public preview is complete as a bounded audit sample and reference workflow for its declared scope; it is not an inferential dataset. Later AlphaMap Research Notes may use larger, study-specific frozen datasets; those releases are versioned and cited independently rather than silently extending `data/sample/v1`. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
 
 | Surface | Role | Current status |
 | --- | --- | --- |
-| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol | Public |
+| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol | Public preview; not an inferential dataset |
 | AlphaMap research | Ongoing research, product context and canonical public updates | Public |
 | Institutional data/API | Intended procurement surface for expanded point-in-time coverage and production delivery | Evaluation-stage; scope and terms are defined per engagement |
 

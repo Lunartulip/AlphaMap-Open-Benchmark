@@ -16,7 +16,7 @@ The open benchmark is not a reduced copy of every Research Note dataset, and a R
 
 - `data/sample/v1` remains fixed after release. A larger study panel does not silently add rows to that directory.
 - A material correction creates a new release, manifest and changelog entry. Prior artifacts remain available for reconstruction.
-- Every distributed file is covered by a manifest and checksum. Restricted source material is represented by provenance metadata and a data-availability statement rather than redistributed without rights.
+- Every released study data artifact is covered by a manifest and checksum. Restricted source material is represented by provenance metadata and a data-availability statement rather than redistributed without rights.
 - Research results remain tied to the exact dataset release, code commit and protocol used to produce them.
 
 ## Required metadata for each Research Note
@@ -40,7 +40,7 @@ No registry entry should imply that an unfinished study has a DOI, SSRN posting 
 2. Build a study-specific snapshot without modifying the released benchmark sample.
 3. Validate temporal integrity, lineage, coverage, manifests and research code.
 4. Produce the Research Note and data-availability statement.
-5. Create a signed GitHub release for the code and machine-readable study metadata.
+5. Create a GitHub Release from a signed, version-specific tag; record the commit SHA, manifest and SHA-256 checksums. When repository settings support immutable releases, enable them before publication.
 6. Archive the appropriate software, paper or permitted data bundle in Zenodo and record its DOI.
 7. Publish the canonical research page and, when useful, submit the working paper PDF to SSRN with links to the DOI and repository release.
 8. Issue corrections as new versions; do not overwrite a cited artifact.
@@ -51,13 +51,14 @@ Zenodo can archive enabled GitHub releases and mint a DOI for the archived relea
 
 - **AlphaMap website:** canonical narrative, methods, figures and current publication status.
 - **This repository:** open contract, audit sample, conformance tests, reference code and the index of Research Note releases.
-- **GitHub release:** immutable code tag, study metadata, configuration and checksums.
+- **GitHub release:** version-specific code tag, study metadata, configuration and checksums; an immutable release is described as such only when GitHub's immutable-release protection is enabled.
 - **Zenodo record:** durable DOI-bearing preservation of the permitted paper, software or data bundle.
-- **SSRN record:** discoverable working paper; it links back to the DOI-bearing artifact and canonical project page.
-- **Institutional delivery:** private bulk snapshots and incremental API or object-store delivery, not a GitHub data dump.
+- **SSRN record:** discoverable working paper whose PDF and metadata reference the DOI-bearing artifact and canonical project page.
+- **Institutional delivery:** private bulk snapshots and incremental API or object-store channels rather than distribution through GitHub.
 
 Official workflow references:
 
+- [GitHub: immutable releases](https://docs.github.com/en/code-security/concepts/supply-chain-security/immutable-releases)
 - [Zenodo: GitHub integration](https://help.zenodo.org/docs/github/)
 - [Zenodo: enable a repository](https://help.zenodo.org/docs/github/enable-repository/)
 - [Zenodo: archive a GitHub release](https://help.zenodo.org/docs/github/archive-software/github-upload/)

@@ -3,7 +3,7 @@ message: "Cite the dataset release manifest and repository commit."
 title: "AlphaMap Open Benchmark"
 type: dataset
 authors:
-  - family-names: "LunarTulip"
+  - name: "LunarTulip"
 repository-code: "https://github.com/Lunartulip/AlphaMap-Open-Benchmark"
 url: "https://github.com/Lunartulip/AlphaMap-Open-Benchmark"
 license: CC-BY-4.0
