@@ -73,4 +73,4 @@ Public and commercial materials should therefore distinguish:
 - Public protocol: ../research/protocol.json
 - Data package: ../datapackage.json
 
-Public website articles are research publications, not licensed dataset deliveries. AlphaMap-authored normalized records in this repository are licensed separately under ../DATA-LICENSE.md.
+Public website articles are research publications, not licensed dataset deliveries. AlphaMap-authored normalized records in this repository are licensed separately under [DATA-LICENSE.md](../DATA-LICENSE.md).
