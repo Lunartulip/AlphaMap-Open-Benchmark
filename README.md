@@ -15,11 +15,29 @@
   <a href="research/protocol.json"><img src="https://img.shields.io/badge/protocol-draft_registered_pending_release-12B886" alt="Draft registered protocol"></a>
 </p>
 
+<p align="center">
+  <a href="https://lunartuliplab.com/en/alphamap"><strong>Explore AlphaMap Research →</strong></a>
+  &nbsp;&nbsp;·&nbsp;&nbsp;
+  <a href="https://lunartuliplab.com/en/institutional-access"><strong>Institutional Access →</strong></a>
+</p>
+
 <a href="assets/visuals/alphamap-research-loop.svg">
   <img src="assets/visuals/alphamap-research-loop.svg" alt="AlphaMap evidence-to-testable-signal research architecture">
 </a>
 
 <sub>Open any figure to inspect the full-resolution SVG.</sub>
+
+## Open benchmark and broader AlphaMap
+
+This repository began as a bounded public AI-chip evidence project and now serves as AlphaMap's open compatibility benchmark. The current public preview is complete as a bounded audit sample and reference workflow for its declared scope; it is not an inferential dataset. Later AlphaMap Research Notes may use larger, study-specific frozen datasets; those releases are versioned and cited independently rather than silently extending `data/sample/v1`. The broader project and ongoing research are maintained at **[lunartuliplab.com/en/alphamap](https://lunartuliplab.com/en/alphamap)**. Institutional teams can begin with the separate **[Institutional Access](https://lunartuliplab.com/en/institutional-access)** page.
+
+| Surface | Role | Current status |
+| --- | --- | --- |
+| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol | Public preview; not an inferential dataset |
+| AlphaMap research | Ongoing research, product context and canonical public updates | Public |
+| Institutional data/API | Intended procurement surface for expanded point-in-time coverage and production delivery | Evaluation-stage; scope and terms are defined per engagement |
+
+Public and institutional surfaces share the same semantic contract; licensed delivery is intended to add breadth, recency, longitudinal depth and operational support. Website research publications and this repository's normalized sample are separately governed; the sample license is defined in [DATA-LICENSE.md](DATA-LICENSE.md). See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model, and the [research release model](docs/RESEARCH_RELEASES.md) for frozen study artifacts, DOI registration and paper links.
 
 ## Pre-specified research question
 
@@ -92,6 +110,7 @@ Required price columns are `date`, `security_id` and `adjusted_close`.
 - `research`: pre-registration state and reproducible runner
 - `docs`: methodology, sampling, timestamps, governance and field semantics
 - [Release roadmap](docs/ROADMAP.md): first 48 hours through vendor-readiness gates
+- [Research release model](docs/RESEARCH_RELEASES.md): frozen study snapshots, DOI/SSRN citation and correction rules
 - `CHANGELOG.md`: release history and link to the historical visualization commit
 
 ## Quality principles
