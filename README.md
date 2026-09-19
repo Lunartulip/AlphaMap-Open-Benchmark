@@ -15,11 +15,27 @@
   <a href="research/protocol.json"><img src="https://img.shields.io/badge/protocol-draft_registered_pending_release-12B886" alt="Draft registered protocol"></a>
 </p>
 
+<p align="center">
+  <a href="https://lunartuliplab.com/alphamap"><strong>AlphaMap Research &amp; Institutional Data →</strong></a>
+</p>
+
 <a href="assets/visuals/alphamap-research-loop.svg">
   <img src="assets/visuals/alphamap-research-loop.svg" alt="AlphaMap evidence-to-testable-signal research architecture">
 </a>
 
 <sub>Open any figure to inspect the full-resolution SVG.</sub>
+
+## Open benchmark and broader AlphaMap
+
+This repository is AlphaMap's public benchmark surface: a versioned, auditable reference implementation that is complete for its declared sample and research scope. The broader project, ongoing research and institutional product direction are maintained at **[lunartuliplab.com/alphamap](https://lunartuliplab.com/alphamap)**.
+
+| Surface | Role |
+| --- | --- |
+| Open benchmark | Public data contract, bounded audit sample, reference code, tests and pre-specified research protocol |
+| AlphaMap research | Ongoing research, product context and canonical public updates |
+| Institutional data/API | Intended procurement surface for expanded point-in-time coverage, scheduled delivery, correction history and service commitments |
+
+The commercial distinction is breadth, recency and operational reliability—not a hidden or contradictory methodology. See [AlphaMap product surfaces](docs/PRODUCT_SURFACES.md) for the compatibility and procurement model.
 
 ## Pre-specified research question
 
